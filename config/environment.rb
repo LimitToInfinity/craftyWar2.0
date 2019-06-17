@@ -9,4 +9,4 @@ ActiveRecord::Base.establish_connection(
     database: "db/characters.db"
 )
 
-binding.pry
+# binding.pry
