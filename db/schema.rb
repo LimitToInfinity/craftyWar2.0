@@ -22,6 +22,10 @@ ActiveRecord::Schema.define(version: 2019_06_18_152257) do
     t.integer "profession_id"
     t.integer "race_id"
     t.integer "user_id"
+    t.index ["character_class_id"], name: "index_characters_on_character_class_id"
+    t.index ["profession_id"], name: "index_characters_on_profession_id"
+    t.index ["race_id"], name: "index_characters_on_race_id"
+    t.index ["user_id"], name: "index_characters_on_user_id"
   end
 
   create_table "professions", force: :cascade do |t|
