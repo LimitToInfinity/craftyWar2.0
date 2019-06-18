@@ -1,6 +1,6 @@
 class Character < ActiveRecord::Base
-    belongs_to :character_classes
-    belongs_to :professions
-    belongs_to :races
-    belongs_to :users
+    belongs_to :character_class
+    belongs_to :profession
+    belongs_to :race
+    belongs_to :user
 end
