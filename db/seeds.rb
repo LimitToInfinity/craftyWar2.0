@@ -1,3 +1,8 @@
+Race.delete_all
+CharacterClass.delete_all
+Profession.delete_all
+
+
 Race.create(name: "Gnome")
 Race.create(name: "Human")
 Race.create(name: "Night Elf")
