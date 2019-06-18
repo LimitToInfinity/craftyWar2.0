@@ -3,7 +3,12 @@ def main_menu
     user_input = gets.strip.downcase
     case user_input
         when "1"
+            if User.all.size > 0
             existing_user
+            else puts ""
+                puts "There are no users!"
+                main_menu
+            end
         when "2"
             new_user
         when "3"
@@ -13,6 +18,7 @@ def main_menu
 end
 
 def welcome
+    puts ""
     puts "Welcome to the World of Crafty War"
     puts "Choose your DESTINY!"
     puts "1. Existing user"
@@ -37,6 +43,7 @@ def existing_user
 end
 
 def new_user
+    puts ""
     puts "Choose your user name:"
     new_user_name = gets.strip
     new_user = User.create(name: new_user_name)
@@ -60,7 +67,12 @@ def existing_user_menu(user_match)
         when "1"
             character_creation(user_match)
         when "2"
-            character_menu(user_match)
+            if user_match.characters.size > 0
+                character_menu(user_match)
+            else puts "" 
+                puts "You don't have any characters!" 
+                existing_user_menu(user_match)
+            end
         when "3"
             main_menu
         when "4"
@@ -124,7 +136,7 @@ def get_character_name(user_match)
     user_input = gets.strip
     character_match = user_match.characters.find {|character| character.name.downcase == user_input.downcase}
     if !character_match
-        get_character_name
+        get_character_name(user_match)
     else character_match
     end
 end
@@ -141,6 +153,7 @@ end
 
 def character_option_menu(character_choice)
     puts ""
+    puts "Prepare yourself for battle #{character_choice.name}!"
     puts "1. Change Character name"
     puts "2. Display Character stats"
     puts "3. Delete Character"
@@ -167,7 +180,7 @@ def character_option_menu(character_choice)
         when "3"
             puts "Are you sure? y/n"
             if gets.strip.downcase == "y"
-                character_choice.destroy
+                character_choice.delete
                 existing_user_menu(character_choice.user)
             else character_option_menu(character_choice)
             end
