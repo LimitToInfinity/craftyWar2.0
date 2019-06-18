@@ -15,12 +15,13 @@ end
 def welcome
     puts "Welcome to the World of Crafty War"
     puts "Choose your DESTINY!"
-    puts "1. Enter existing user"
-    puts "2. Create new user!"
+    puts "1. Existing user"
+    puts "2. New user!"
     puts "3. Exit"
 end
 
 def existing_user
+    puts ""
     puts "Current users:"
     User.all.each {|user| puts user.name}
     puts ""
@@ -38,28 +39,38 @@ end
 def new_user
     puts "Choose your user name:"
     new_user_name = gets.strip
-    User.create(name: new_user_name)
+    new_user = User.create(name: new_user_name)
+    existing_user_menu(new_user)
 end
 
 def exit_message
-    puts "They always come back!"
+    puts ""
+    puts "You'll be back!"
 end
 
 def existing_user_menu(user_match)
+    puts ""
     puts "Welcome #{user_match.name}"
     puts "1. Create new Character"
     puts "2. Select a Character"
+    puts "3. Main Menu"
+    puts "4. Exit"
     user_input = gets.strip
     case user_input
         when "1"
             character_creation(user_match)
         when "2"
-            character_menu
+            character_menu(user_match)
+        when "3"
+            main_menu
+        when "4"
+            exit_message
         else existing_user_menu(user_match)
     end
 end
 
 def character_creation(user_match)
+    puts ""
     puts "Enter Character name:"
     new_character_name = gets.strip
     puts ""
@@ -74,7 +85,8 @@ def character_creation(user_match)
     puts "Choose your Profession:"
     Profession.all.each {|profession| puts profession.name}
     new_profession = get_profession
-    char1 = Character.create(name: new_character_name, race: new_race, character_class: new_character_class, profession: new_profession, user: user_match)
+    new_character = Character.create(name: new_character_name, race: new_race, character_class: new_character_class, profession: new_profession, user: user_match)
+    character_option_menu(new_character)
 end
 
 def get_race
@@ -107,8 +119,64 @@ def get_profession
     end
 end
 
-def character_menu
-    puts "This is the character menu."
-    # puts user_match.characters.each {|character| puts character.name }
-    # puts "Enter Character name:"
+def get_character_name(user_match)
+    puts "Choose your Character:"
+    user_input = gets.strip
+    character_match = user_match.characters.find {|character| character.name.downcase == user_input.downcase}
+    if !character_match
+        get_character_name
+    else character_match
+    end
+end
+
+def character_menu(user_match)
+    puts ""
+    puts "Your characters:"
+    puts user_match.characters.map {|character| puts character.name}.compact
+    puts ""
+    puts "Enter Character name:"
+    character_choice = get_character_name(user_match)
+    character_option_menu(character_choice)
+end
+
+def character_option_menu(character_choice)
+    puts ""
+    puts "1. Change Character name"
+    puts "2. Display Character stats"
+    puts "3. Delete Character"
+    puts "4. User Menu"
+    puts "5. Main Menu"
+    puts "6. Exit"
+    user_input = gets.strip
+    case user_input
+        when "1"
+            puts ""
+            puts "Enter new name"
+            new_name = gets.strip
+            puts ""
+            character_choice.update(name: new_name)
+            character_option_menu(character_choice)
+        when "2"
+            puts ""
+            puts "Character - #{character_choice.name}"
+            puts "Race - #{character_choice.race.name}"
+            puts "Class - #{character_choice.character_class.name}"
+            puts "Profession - #{character_choice.profession.name}"
+            puts ""
+            character_option_menu(character_choice)
+        when "3"
+            puts "Are you sure? y/n"
+            if gets.strip.downcase == "y"
+                character_choice.destroy
+                existing_user_menu(character_choice.user)
+            else character_option_menu(character_choice)
+            end
+        when "4"
+            existing_user_menu(character_choice.user)
+        when "5"
+            main_menu
+        when "6"
+            exit_message
+        else character_option_menu(character_choice)
+    end
 end
