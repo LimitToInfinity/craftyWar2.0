@@ -9,6 +9,8 @@ ActiveRecord::Base.establish_connection(
     database: "db/characters.db"
 )
 
+ActiveRecord::Base.logger = nil
+
 main_menu
 
-# binding.pry
+binding.pry
