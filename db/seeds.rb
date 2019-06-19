@@ -1,7 +1,8 @@
 Race.delete_all
 CharacterClass.delete_all
 Profession.delete_all
-
+Character.delete_all
+User.delete_all
 
 Race.create(name: "Gnome")
 Race.create(name: "Human")
@@ -41,3 +42,7 @@ Profession.create(name: "Leatherworker")
 Profession.create(name: "Miner")
 Profession.create(name: "Skinner")
 Profession.create(name: "Tailor")
+
+Monster.create(name: "Muahaha", hit_points: 15, attack_power: 7)
+Monster.create(name: "Cellulite", hit_points: 20, attack_power: 5)
+Monster.create(name: "Kali", hit_points: 12, attack_power: 9)
