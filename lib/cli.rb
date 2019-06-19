@@ -72,7 +72,7 @@ def existing_user_menu(user_match)
     puts ""
     puts "Welcome #{user_match.name}".light_red.on_black
     puts "1. Create new Character".light_yellow
-    puts "2. Select a Character".light_yellow
+    puts "2. Choose an existing Character".light_yellow
     puts "3. Main Menu".light_yellow
     puts "4. Exit".light_cyan.on_black
     user_input = gets.strip
@@ -109,17 +109,17 @@ def character_creation(user_match)
 
     puts ""
     puts "Races:".light_cyan.on_blue
-    Race.all.each {|race| puts race.name.light_cyan.on_blue}
+    Race.all.each.with_index(1) {|race, index| puts "#{index}. #{race.name.light_cyan.on_blue}"}
     new_race = get_race
 
     puts ""
     puts "Classes:".light_cyan.on_blue
-    CharacterClass.all.each {|character_class| puts character_class.name.light_cyan.on_blue}
+    CharacterClass.all.each.with_index(1) {|character, index| puts "#{index}. #{character.name.light_cyan.on_blue}"}
     new_character_class = get_character_class
 
     puts ""
     puts "Professions:".light_cyan.on_blue
-    Profession.all.each {|profession| puts profession.name.light_cyan.on_blue}
+    Profession.all.each.with_index(1) {|profession, index| puts "#{index}. #{profession.name.light_cyan.on_blue}"}
     new_profession = get_profession
 
     new_character = Character.create(name: new_character_name, race: new_race, character_class: new_character_class, profession: new_profession, user: user_match)
@@ -132,11 +132,17 @@ def get_race
     puts ""
     puts "Choose your Race:".light_cyan.on_blue
     user_input = gets.strip
-    race_match = Race.all.find {|race| race.name.downcase == user_input.downcase}
-    if !race_match
-        get_race
+    if user_input.to_i == 0
+        race_match = Race.all.find {|race| race.name.downcase == user_input.downcase}
+        if !race_match
+            get_race
+        else
+            race_match
+        end
+    elsif user_input.to_i >= 1 && user_input.to_i <= Race.all.size
+        Race.all[user_input.to_i - 1]
     else
-        race_match
+        get_race 
     end
 end
 
@@ -144,11 +150,17 @@ def get_character_class
     puts ""
     puts "Choose your Class:".light_cyan.on_blue
     user_input = gets.strip
-    character_class_match = CharacterClass.all.find {|character_class| character_class.name.downcase == user_input.downcase}
-    if !character_class_match
-        get_character_class
+    if user_input.to_i == 0
+        character_class_match = CharacterClass.all.find {|character_class| character_class.name.downcase == user_input.downcase}
+        if !character_class_match
+            get_character_class
+        else
+            character_class_match
+        end
+    elsif user_input.to_i >= 1 && user_input.to_i <= CharacterClass.all.size
+        CharacterClass.all[user_input.to_i - 1]
     else
-        character_class_match
+        get_character_class
     end
 end
 
@@ -156,11 +168,17 @@ def get_profession
     puts ""
     puts "Choose your Profession:".light_cyan.on_blue
     user_input = gets.strip
-    profession_match = Profession.all.find {|profession| profession.name.downcase == user_input.downcase}
-    if !profession_match
-        get_profession
+    if user_input.to_i == 0
+        profession_match = Profession.all.find {|profession| profession.name.downcase == user_input.downcase}
+        if !profession_match
+            get_profession
+        else
+            profession_match
+        end
+    elsif user_input.to_i >= 1 && user_input.to_i <= Profession.all.size
+        Profession.all[user_input.to_i - 1]
     else
-        profession_match
+        get_profession
     end
 end
 
