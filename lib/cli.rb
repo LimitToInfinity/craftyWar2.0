@@ -1,4 +1,5 @@
 def main_menu
+    system("clear")
     puts welcome
     user_input = gets.strip
     case user_input
@@ -9,7 +10,7 @@ def main_menu
             else
                 puts ""
                 system("clear")
-                puts "There are no users!"
+                puts "There are no users!".light_red.on_black
                 main_menu
             end
         when "2"
@@ -26,19 +27,19 @@ end
 
 def welcome
     puts ""
-    puts "Welcome to the World of Crafty War"
-    puts "Choose your DESTINY!"
-    puts "1. Existing user"
-    puts "2. New user!"
-    puts "3. Exit"
+    puts "Welcome to the World of Crafty War".black.on_red
+    puts "Choose your DESTINY!".light_red.on_black.blink
+    puts "1. Existing user".light_yellow
+    puts "2. New user!".light_yellow
+    puts "3. Exit".light_cyan.on_black
 end
 
 def existing_user
     puts ""
-    puts "Current users:"
-    User.all.each {|user| puts user.name}
+    puts "Current users:".light_yellow
+    User.all.each {|user| puts user.name.light_red.on_black}
     puts ""
-    puts "Enter your user name:"
+    puts "Enter your user name:".light_yellow
     user_name = gets.strip
     user_match = User.all.find do |user|
         user_name.downcase == user.name.downcase
@@ -54,7 +55,7 @@ end
 
 def new_user
     puts ""
-    puts "Choose your user name:"
+    puts "Choose your user name:".light_yellow
     new_user_name = gets.strip
     new_user = User.create(name: new_user_name)
     system("clear")
@@ -63,17 +64,17 @@ end
 
 def exit_message
     puts ""
-    puts "You'll be back!"
+    puts "They always come back!".black.on_light_yellow
 end
 
 def existing_user_menu(user_match)
     user_match.reload
     puts ""
-    puts "Welcome #{user_match.name}"
-    puts "1. Create new Character"
-    puts "2. Select a Character"
-    puts "3. Main Menu"
-    puts "4. Exit"
+    puts "Welcome #{user_match.name}".light_red.on_black
+    puts "1. Create new Character".light_yellow
+    puts "2. Select a Character".light_yellow
+    puts "3. Main Menu".light_yellow
+    puts "4. Exit".light_cyan.on_black
     user_input = gets.strip
     case user_input
         when "1"
@@ -86,7 +87,7 @@ def existing_user_menu(user_match)
             else
                 system("clear")
                 puts ""
-                puts "You don't have any characters!"
+                puts "You don't have any characters!".light_red.on_black
                 existing_user_menu(user_match)
             end
         when "3"
@@ -103,22 +104,22 @@ end
 def character_creation(user_match)
 
     puts ""
-    puts "Enter Character name:"
+    puts "Enter Character name:".light_cyan.on_blue
     new_character_name = gets.strip
 
     puts ""
-    puts "Races:"
-    Race.all.each {|race| puts race.name}
+    puts "Races:".light_cyan.on_blue
+    Race.all.each {|race| puts race.name.light_cyan.on_blue}
     new_race = get_race
 
     puts ""
-    puts "Classes:"
-    CharacterClass.all.each {|character_class| puts character_class.name}
+    puts "Classes:".light_cyan.on_blue
+    CharacterClass.all.each {|character_class| puts character_class.name.light_cyan.on_blue}
     new_character_class = get_character_class
 
     puts ""
-    puts "Professions:"
-    Profession.all.each {|profession| puts profession.name}
+    puts "Professions:".light_cyan.on_blue
+    Profession.all.each {|profession| puts profession.name.light_cyan.on_blue}
     new_profession = get_profession
 
     new_character = Character.create(name: new_character_name, race: new_race, character_class: new_character_class, profession: new_profession, user: user_match)
@@ -129,7 +130,7 @@ end
 
 def get_race
     puts ""
-    puts "Choose your Race:"
+    puts "Choose your Race:".light_cyan.on_blue
     user_input = gets.strip
     race_match = Race.all.find {|race| race.name.downcase == user_input.downcase}
     if !race_match
@@ -141,7 +142,7 @@ end
 
 def get_character_class
     puts ""
-    puts "Choose your Class:"
+    puts "Choose your Class:".light_cyan.on_blue
     user_input = gets.strip
     character_class_match = CharacterClass.all.find {|character_class| character_class.name.downcase == user_input.downcase}
     if !character_class_match
@@ -153,7 +154,7 @@ end
 
 def get_profession
     puts ""
-    puts "Choose your Profession:"
+    puts "Choose your Profession:".light_cyan.on_blue
     user_input = gets.strip
     profession_match = Profession.all.find {|profession| profession.name.downcase == user_input.downcase}
     if !profession_match
@@ -165,8 +166,8 @@ end
 
 def character_menu(user_match)
     puts ""
-    puts "Your characters:"
-    puts user_match.characters.map {|character| puts character.name}.compact
+    puts "Your characters:".light_yellow
+    puts user_match.characters.map {|character| puts character.name.light_red.on_black}.compact
     character_choice = get_character_name(user_match)
     system("clear")
     character_option_menu(character_choice)
@@ -174,7 +175,7 @@ end
 
 def get_character_name(user_match)
     puts ""
-    puts "Choose your Character:"
+    puts "Choose your Character:".light_yellow
     user_input = gets.strip
     character_match = user_match.characters.find {|character| character.name.downcase == user_input.downcase}
     if !character_match
@@ -186,14 +187,14 @@ end
 
 def character_option_menu(character_choice)
     puts ""
-    puts "Prepare yourself for battle #{character_choice.name}!"
-    puts "1. Battle!"
-    puts "2. Change Character name"
-    puts "3. Display Character stats"
-    puts "4. Delete Character"
-    puts "5. User Menu"
-    puts "6. Main Menu"
-    puts "7. Exit"
+    puts "Prepare yourself for battle #{character_choice.name}!".black.on_red.blink
+    puts "1. Battle!".light_red.on_black
+    puts "2. Change Character name".light_yellow
+    puts "3. Display Character stats".light_yellow
+    puts "4. Delete Character".light_yellow
+    puts "5. User Menu".light_yellow
+    puts "6. Main Menu".light_yellow
+    puts "7. Exit".light_cyan.on_black
     user_input = gets.strip
     case user_input
         when "1"
@@ -201,7 +202,7 @@ def character_option_menu(character_choice)
             battle_menu(character_choice)
         when "2"
             puts ""
-            puts "Enter new name"
+            puts "Enter new name".light_yellow
             new_name = gets.strip
             puts ""
             character_choice.update(name: new_name)
@@ -210,17 +211,17 @@ def character_option_menu(character_choice)
         when "3"
             system("clear")
             puts ""
-            puts "Character - #{character_choice.name}"
-            puts "Race - #{character_choice.race.name}"
-            puts "Class - #{character_choice.character_class.name}"
-            puts "Profession - #{character_choice.profession.name}"
-            puts "Hit Point - #{character_choice.character_class.hit_points}"
-            puts "Attack Power - #{character_choice.character_class.attack_power}"
+            puts "Character - #{character_choice.name}".black.on_red
+            puts "Race - #{character_choice.race.name}".light_green.on_black
+            puts "Class - #{character_choice.character_class.name}".light_green.on_black
+            puts "Profession - #{character_choice.profession.name}".light_green.on_black
+            puts "Hit Point - #{character_choice.character_class.hit_points}".light_green.on_black
+            puts "Attack Power - #{character_choice.character_class.attack_power}".light_green.on_black
             puts ""
             character_option_menu(character_choice)
         when "4"
             puts ""
-            puts "Are you sure? y/n"
+            puts "Are you sure? y/n".light_red.on_black
             if gets.strip.downcase == "y"
                 character_choice.destroy
                 system("clear")
@@ -246,12 +247,12 @@ end
 
 def battle_menu(character_choice)
     puts ""
-    puts "PREPARE FOR BATTLE!!!"
+    puts "PREPARE FOR BATTLE!!!".light_red.on_black
     puts ""
-    puts "A MONSTER approaches!"
+    puts "A MONSTER approaches!".black.on_red
     puts ""
-    puts "1. Fight!"
-    puts "2. RUNNNNN"
+    puts "1. Fight!".light_red.on_black
+    puts "2. RUNNNNN".white
     user_input = gets.strip
     case user_input
         when "1"
@@ -279,11 +280,11 @@ end
 
 def attack(name, hp, ap, monster_name, monster_hp, monster_ap)
     puts ""
-    puts "Name: #{name}, HP: #{hp}"
-    puts "Monster: #{monster_name}, HP: #{monster_hp}"
+    puts "Name: #{name}, HP: #{hp}".light_cyan.on_black
+    puts "Monster: #{monster_name}, HP: #{monster_hp}".black.on_light_red
 
     puts ""
-    puts "1. Attack"
+    puts "1. Attack".light_yellow.on_black
 
     gets.strip
 
@@ -292,8 +293,8 @@ def attack(name, hp, ap, monster_name, monster_hp, monster_ap)
 
     system("clear")
     puts ""
-    puts "#{name}'s attack: #{attack}"
-    puts "#{monster_name}'s attack: #{monster_attack}"
+    puts "#{name}'s attack: #{attack}".light_cyan.on_black
+    puts "#{monster_name}'s attack: #{monster_attack}".black.on_light_red
 
     hp -= monster_attack
     monster_hp -= attack
@@ -301,15 +302,15 @@ def attack(name, hp, ap, monster_name, monster_hp, monster_ap)
     if(hp <= 0 && monster_hp > 0)
         system("clear")
         puts ""
-        puts "You Lose!"
+        puts "You Lose!".light_red.on_black
     elsif(hp > 0 && monster_hp <= 0)
         system("clear")
         puts ""
-        puts "You Win!"
+        puts "You Win!".light_green.on_black
     elsif(hp <= 0 && monster_hp <= 0)
         system("clear")
         puts ""
-        puts "It's a tie."
+        puts "It's a tie.".light_white.on_black
     else
         attack(name, hp, ap, monster_name, monster_hp, monster_ap)
     end
