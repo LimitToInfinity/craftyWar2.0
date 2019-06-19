@@ -1,6 +1,6 @@
 def main_menu
     puts welcome
-    user_input = gets.strip.downcase
+    user_input = gets.strip
     case user_input
         when "1"
             if User.all.size > 0
@@ -82,22 +82,28 @@ def existing_user_menu(user_match)
 end
 
 def character_creation(user_match)
+
     puts ""
     puts "Enter Character name:"
     new_character_name = gets.strip
+
     puts ""
-    puts "Choose your Race:"
+    puts "Races:"
     Race.all.each {|race| puts race.name}
     new_race = get_race
+    
     puts ""
-    puts "Choose your Class:"
+    puts "Classes:"
     CharacterClass.all.each {|character_class| puts character_class.name}
     new_character_class = get_character_class
+    
     puts ""
-    puts "Choose your Profession:"
+    puts "Professions:"
     Profession.all.each {|profession| puts profession.name}
     new_profession = get_profession
+    
     new_character = Character.create(name: new_character_name, race: new_race, character_class: new_character_class, profession: new_profession, user: user_match)
+   
     character_option_menu(new_character)
 end
 
@@ -178,9 +184,10 @@ def character_option_menu(character_choice)
             puts ""
             character_option_menu(character_choice)
         when "3"
+            puts ""
             puts "Are you sure? y/n"
             if gets.strip.downcase == "y"
-                character_choice.delete
+                character_choice.destroy
                 existing_user_menu(character_choice.user)
             else character_option_menu(character_choice)
             end
