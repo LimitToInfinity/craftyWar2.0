@@ -13,4 +13,4 @@ ActiveRecord::Base.logger = nil
 
 main_menu
 
-binding.pry
+#binding.pry
