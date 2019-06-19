@@ -6,10 +6,10 @@ def main_menu
             if User.all.size > 0
                 system("clear")
                 existing_user
-            else 
+            else
                 puts ""
-                puts "There are no users!"
                 system("clear")
+                puts "There are no users!"
                 main_menu
             end
         when "2"
@@ -18,7 +18,7 @@ def main_menu
         when "3"
             system("clear")
             exit_message
-        else 
+        else
             system("clear")
             main_menu
     end
@@ -46,7 +46,7 @@ def existing_user
     if user_match
         system("clear")
         existing_user_menu(user_match)
-    else 
+    else
         system("clear")
         main_menu
     end
@@ -83,8 +83,8 @@ def existing_user_menu(user_match)
             if user_match.characters.size > 0
                 system("clear")
                 character_menu(user_match)
-            else 
-                system("clear") 
+            else
+                system("clear")
                 puts ""
                 puts "You don't have any characters!"
                 existing_user_menu(user_match)
@@ -95,13 +95,13 @@ def existing_user_menu(user_match)
         when "4"
             system("clear")
             exit_message
-        else 
+        else
             existing_user_menu(user_match)
     end
 end
 
 def character_creation(user_match)
-    
+
     puts ""
     puts "Enter Character name:"
     new_character_name = gets.strip
@@ -110,19 +110,19 @@ def character_creation(user_match)
     puts "Races:"
     Race.all.each {|race| puts race.name}
     new_race = get_race
-    
+
     puts ""
     puts "Classes:"
     CharacterClass.all.each {|character_class| puts character_class.name}
     new_character_class = get_character_class
-    
+
     puts ""
     puts "Professions:"
     Profession.all.each {|profession| puts profession.name}
     new_profession = get_profession
-    
+
     new_character = Character.create(name: new_character_name, race: new_race, character_class: new_character_class, profession: new_profession, user: user_match)
-   
+
     system("clear")
     character_option_menu(new_character)
 end
@@ -134,7 +134,7 @@ def get_race
     race_match = Race.all.find {|race| race.name.downcase == user_input.downcase}
     if !race_match
         get_race
-    else 
+    else
         race_match
     end
 end
@@ -146,7 +146,7 @@ def get_character_class
     character_class_match = CharacterClass.all.find {|character_class| character_class.name.downcase == user_input.downcase}
     if !character_class_match
         get_character_class
-    else 
+    else
         character_class_match
     end
 end
@@ -158,7 +158,7 @@ def get_profession
     profession_match = Profession.all.find {|profession| profession.name.downcase == user_input.downcase}
     if !profession_match
         get_profession
-    else 
+    else
         profession_match
     end
 end
@@ -179,7 +179,7 @@ def get_character_name(user_match)
     character_match = user_match.characters.find {|character| character.name.downcase == user_input.downcase}
     if !character_match
         get_character_name(user_match)
-    else 
+    else
         character_match
     end
 end
@@ -214,6 +214,8 @@ def character_option_menu(character_choice)
             puts "Race - #{character_choice.race.name}"
             puts "Class - #{character_choice.character_class.name}"
             puts "Profession - #{character_choice.profession.name}"
+            puts "Hit Point - #{character_choice.character_class.hit_points}"
+            puts "Attack Power - #{character_choice.character_class.attack_power}"
             puts ""
             character_option_menu(character_choice)
         when "4"
@@ -223,7 +225,7 @@ def character_option_menu(character_choice)
                 character_choice.destroy
                 system("clear")
                 existing_user_menu(character_choice.user)
-            else 
+            else
                 system("clear")
                 character_option_menu(character_choice)
             end
@@ -236,7 +238,7 @@ def character_option_menu(character_choice)
         when "7"
             system("clear")
             exit_message
-        else 
+        else
             system("clear")
             character_option_menu(character_choice)
     end
@@ -263,7 +265,52 @@ def battle_menu(character_choice)
     end
 end
 
-def battle_arena
+def battle_arena(character_choice)
+    monster = Monster.all.sample
+
+    ap = character_choice.character_class.attack_power
+    hp = character_choice.character_class.hit_points
+    monster_ap = monster.attack_power
+    monster_hp = monster.hit_points
+
+    attack(character_choice.name, hp, ap, monster.name, monster_hp, monster_ap)
+    character_option_menu(character_choice)
+end
+
+def attack(name, hp, ap, monster_name, monster_hp, monster_ap)
+    puts ""
+    puts "Name: #{name}, HP: #{hp}"
+    puts "Monster: #{monster_name}, HP: #{monster_hp}"
+
     puts ""
     puts "1. Attack"
+
+    gets.strip
+
+    attack = rand(1..ap)
+    monster_attack = rand(1..monster_ap)
+
+    system("clear")
+    puts ""
+    puts "#{name}'s attack: #{attack}"
+    puts "#{monster_name}'s attack: #{monster_attack}"
+
+    hp -= monster_attack
+    monster_hp -= attack
+
+    if(hp <= 0 && monster_hp > 0)
+        system("clear")
+        puts ""
+        puts "You Lose!"
+    elsif(hp > 0 && monster_hp <= 0)
+        system("clear")
+        puts ""
+        puts "You Win!"
+    elsif(hp <= 0 && monster_hp <= 0)
+        system("clear")
+        puts ""
+        puts "It's a tie."
+    else
+        attack(name, hp, ap, monster_name, monster_hp, monster_ap)
+    end
 end
