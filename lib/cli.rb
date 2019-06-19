@@ -187,15 +187,19 @@ end
 def character_option_menu(character_choice)
     puts ""
     puts "Prepare yourself for battle #{character_choice.name}!"
-    puts "1. Change Character name"
-    puts "2. Display Character stats"
-    puts "3. Delete Character"
-    puts "4. User Menu"
-    puts "5. Main Menu"
-    puts "6. Exit"
+    puts "1. Battle!"
+    puts "2. Change Character name"
+    puts "3. Display Character stats"
+    puts "4. Delete Character"
+    puts "5. User Menu"
+    puts "6. Main Menu"
+    puts "7. Exit"
     user_input = gets.strip
     case user_input
         when "1"
+            system("clear")
+            battle_menu(character_choice)
+        when "2"
             puts ""
             puts "Enter new name"
             new_name = gets.strip
@@ -203,7 +207,7 @@ def character_option_menu(character_choice)
             character_choice.update(name: new_name)
             system("clear")
             character_option_menu(character_choice)
-        when "2"
+        when "3"
             system("clear")
             puts ""
             puts "Character - #{character_choice.name}"
@@ -212,7 +216,7 @@ def character_option_menu(character_choice)
             puts "Profession - #{character_choice.profession.name}"
             puts ""
             character_option_menu(character_choice)
-        when "3"
+        when "4"
             puts ""
             puts "Are you sure? y/n"
             if gets.strip.downcase == "y"
@@ -223,17 +227,43 @@ def character_option_menu(character_choice)
                 system("clear")
                 character_option_menu(character_choice)
             end
-        when "4"
-            system("clear")
-            existing_user_menu(character_choice.user)
         when "5"
             system("clear")
-            main_menu
+            existing_user_menu(character_choice.user)
         when "6"
+            system("clear")
+            main_menu
+        when "7"
             system("clear")
             exit_message
         else 
             system("clear")
             character_option_menu(character_choice)
     end
+end
+
+def battle_menu(character_choice)
+    puts ""
+    puts "PREPARE FOR BATTLE!!!"
+    puts ""
+    puts "A MONSTER approaches!"
+    puts ""
+    puts "1. Fight!"
+    puts "2. RUNNNNN"
+    user_input = gets.strip
+    case user_input
+        when "1"
+            system("clear")
+            battle_arena(character_choice)
+        when "2"
+            system("clear")
+            character_option_menu(character_choice)
+        else
+            battle_menu(character_choice)
+    end
+end
+
+def battle_arena
+    puts ""
+    puts "1. Attack"
 end
