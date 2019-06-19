@@ -56,6 +56,7 @@ def exit_message
 end
 
 def existing_user_menu(user_match)
+    user_match.reload
     puts ""
     puts "Welcome #{user_match.name}"
     puts "1. Create new Character"
@@ -69,8 +70,8 @@ def existing_user_menu(user_match)
         when "2"
             if user_match.characters.size > 0
                 character_menu(user_match)
-            else puts "" 
-                puts "You don't have any characters!" 
+            else puts ""
+                puts "You don't have any characters!"
                 existing_user_menu(user_match)
             end
         when "3"
