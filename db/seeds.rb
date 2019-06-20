@@ -3,6 +3,9 @@ BattleClass.delete_all
 Profession.delete_all
 Character.delete_all
 User.delete_all
+MonsterVerbage.delete_all
+Monster.delete_all
+
 
 Race.create(name: "Gnome", hit_points: 3, attack_power: 1, defense: 1, picture: "gnome.jpg")
 Race.create(name: "Human", hit_points: 2, attack_power: 2, defense: 1, picture: "human.jpg")
@@ -43,6 +46,16 @@ Profession.create(name: "Miner", picture: "miner.png")
 Profession.create(name: "Skinner", picture: "skinner.png")
 Profession.create(name: "Tailor", picture: "tailor.jpg")
 
-Monster.create(name: "Muahaha", hit_points: 17, attack_power: 8, defense: 4)
-Monster.create(name: "Cellulite", hit_points: 22, attack_power: 6, defense: 2)
-Monster.create(name: "Kali", hit_points: 15, attack_power: 9, defense: 3)
+muahaha = Monster.create(name: "Muahaha", hit_points: 17, attack_power: 8, defense: 4)
+cellulite = Monster.create(name: "Cellulite", hit_points: 22, attack_power: 6, defense: 2)
+kali = Monster.create(name: "Kali", hit_points: 15, attack_power: 9, defense: 3)
+
+MonsterVerbage.create(verbage: "You're doomed!", monster: muahaha)
+MonsterVerbage.create(verbage: "Feel my wrath!", monster: muahaha)
+MonsterVerbage.create(verbage: "Your life is futile!", monster: muahaha)
+MonsterVerbage.create(verbage: "Thine blubber shall be thine downfall!", monster: cellulite)
+MonsterVerbage.create(verbage: "Thy shall be squished!", monster: cellulite)
+MonsterVerbage.create(verbage: "I will eat you like a cookie!", monster: cellulite)
+MonsterVerbage.create(verbage: "Divine you are not!", monster: kali)
+MonsterVerbage.create(verbage: "Hero, you will be destroyed!", monster: kali)
+MonsterVerbage.create(verbage: "How dare you show yourself!", monster: kali)

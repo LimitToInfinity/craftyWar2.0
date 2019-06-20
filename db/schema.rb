@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_19_164715) do
+ActiveRecord::Schema.define(version: 2019_06_20_222147) do
 
   create_table "battle_classes", force: :cascade do |t|
     t.string "name"
@@ -33,6 +33,12 @@ ActiveRecord::Schema.define(version: 2019_06_19_164715) do
     t.index ["profession_id"], name: "index_characters_on_profession_id"
     t.index ["race_id"], name: "index_characters_on_race_id"
     t.index ["user_id"], name: "index_characters_on_user_id"
+  end
+
+  create_table "monster_verbages", force: :cascade do |t|
+    t.string "verbage"
+    t.integer "monster_id"
+    t.index ["monster_id"], name: "index_monster_verbages_on_monster_id"
   end
 
   create_table "monsters", force: :cascade do |t|
