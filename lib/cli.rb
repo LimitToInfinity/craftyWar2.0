@@ -142,8 +142,14 @@ def character_creation(user_match)
     else
         puts ""
         puts "Races:".light_yellow.on_red
-        Race.all.each.with_index(1) {|race, index| puts "#{index}. #{race.name}".light_cyan.on_blue}
+        Race.all.each.with_index(1) do |race, index|
+            puts "#{index}. #{race.name}".light_cyan.on_blue
+            puts "Hit Points: #{race.hit_points}, Attack Power: #{race.attack_power}".light_yellow
+        end
         new_race = get_race
+        race_hp = new_race.hit_points
+        race_ap = new_race.attack_power
+        
         
         system("clear")
         puts ""
@@ -159,6 +165,8 @@ def character_creation(user_match)
             puts "Hit Points: #{character.hit_points}, Attack Power: #{character.attack_power}".light_yellow
         end
         new_character_class = get_character_class
+        cc_hp = new_character_class.hit_points
+        cc_ap = new_character_class.attack_power
         
         system("clear")
         puts ""
@@ -176,7 +184,9 @@ def character_creation(user_match)
         new_profession = get_profession
         system("imgcat ./lib/pic/#{new_profession.picture}")
     
-        new_character = Character.create(name: new_character_name, race: new_race, character_class: new_character_class, profession: new_profession, user: user_match)
+        new_hp = race_hp + cc_hp
+        new_ap = race_ap + cc_ap
+        new_character = Character.create(name: new_character_name, race: new_race, character_class: new_character_class, profession: new_profession, user: user_match, hit_points: new_hp, attack_power: new_ap)
     
         system("clear")
         display_character_stats(new_character)
@@ -337,9 +347,9 @@ def display_character_stats(character_choice)
     puts "Profession - #{character_choice.profession.name}".light_green.on_black
     system("imgcat ./lib/pic/#{character_choice.profession.picture}")
 
-    puts "Hit Points - #{character_choice.character_class.hit_points}".light_green.on_black
+    puts "Hit Points - #{character_choice.hit_points}".light_green.on_black
 
-    puts "Attack Power - #{character_choice.character_class.attack_power}".light_green.on_black
+    puts "Attack Power - #{character_choice.attack_power}".light_green.on_black
     puts ""
 end
 
@@ -367,8 +377,8 @@ end
 def battle_arena(character_choice)
     monster = Monster.all.sample
     
-    ap = character_choice.character_class.attack_power
-    hp = character_choice.character_class.hit_points
+    ap = character_choice.attack_power
+    hp = character_choice.hit_points
     monster_ap = monster.attack_power
     monster_hp = monster.hit_points
     
