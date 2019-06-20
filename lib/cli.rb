@@ -160,13 +160,13 @@ def character_creation(user_match)
         
         puts ""
         puts "Classes:".light_yellow.on_red
-        CharacterClass.all.each.with_index(1) do |character, index|
-            puts "#{index}. #{character.name}".light_cyan.on_blue
-            puts "Hit Points: #{character.hit_points}, Attack Power: #{character.attack_power}".light_yellow
+        BattleClass.all.each.with_index(1) do |battle_class, index|
+            puts "#{index}. #{battle_class.name}".light_cyan.on_blue
+            puts "Hit Points: #{battle_class.hit_points}, Attack Power: #{battle_class.attack_power}".light_yellow
         end
-        new_character_class = get_character_class
-        cc_hp = new_character_class.hit_points
-        cc_ap = new_character_class.attack_power
+        new_battle_class = get_battle_class
+        bc_hp = new_battle_class.hit_points
+        bc_ap = new_battle_class.attack_power
         
         system("clear")
         puts ""
@@ -175,8 +175,8 @@ def character_creation(user_match)
         puts "Race - #{new_race.name}".light_green.on_black
         system("imgcat ./lib/pic/#{new_race.picture}")
         puts ""
-        puts "Class - #{new_character_class.name}".light_green.on_black
-        system("imgcat ./lib/pic/#{new_character_class.picture}")
+        puts "Class - #{new_battle_class.name}".light_green.on_black
+        system("imgcat ./lib/pic/#{new_battle_class.picture}")
         
         puts ""
         puts "Professions:".light_yellow.on_red
@@ -184,9 +184,9 @@ def character_creation(user_match)
         new_profession = get_profession
         system("imgcat ./lib/pic/#{new_profession.picture}")
     
-        new_hp = race_hp + cc_hp
-        new_ap = race_ap + cc_ap
-        new_character = Character.create(name: new_character_name, race: new_race, character_class: new_character_class, profession: new_profession, user: user_match, hit_points: new_hp, attack_power: new_ap)
+        new_hp = race_hp + bc_hp
+        new_ap = race_ap + bc_ap
+        new_character = Character.create(name: new_character_name, race: new_race, battle_class: new_battle_class, profession: new_profession, user: user_match, hit_points: new_hp, attack_power: new_ap)
     
         system("clear")
         display_character_stats(new_character)
@@ -212,21 +212,21 @@ def get_race
     end
 end
 
-def get_character_class
+def get_battle_class
     puts ""
     puts "Choose your Class:".light_yellow.on_red
     user_input = gets.strip
     if user_input.to_i == 0
-        character_class_match = CharacterClass.all.find {|character_class| character_class.name.downcase == user_input.downcase}
-        if !character_class_match
-            get_character_class
+        battle_class_match = BattleClass.all.find {|battle_class| battle_class.name.downcase == user_input.downcase}
+        if !battle_class_match
+            get_battle_class
         else
-            character_class_match
+            battle_class_match
         end
-    elsif user_input.to_i >= 1 && user_input.to_i <= CharacterClass.all.size
-        CharacterClass.all[user_input.to_i - 1]
+    elsif user_input.to_i >= 1 && user_input.to_i <= BattleClass.all.size
+        BattleClass.all[user_input.to_i - 1]
     else
-        get_character_class
+        get_battle_class
     end
 end
 
@@ -341,8 +341,8 @@ def display_character_stats(character_choice)
     puts "Race - #{character_choice.race.name}".light_green.on_black
     system("imgcat ./lib/pic/#{character_choice.race.picture}")
 
-    puts "Class - #{character_choice.character_class.name}".light_green.on_black
-    system("imgcat ./lib/pic/#{character_choice.character_class.picture}")
+    puts "Class - #{character_choice.battle_class.name}".light_green.on_black
+    system("imgcat ./lib/pic/#{character_choice.battle_class.picture}")
 
     puts "Profession - #{character_choice.profession.name}".light_green.on_black
     system("imgcat ./lib/pic/#{character_choice.profession.picture}")

@@ -1,6 +1,6 @@
-class CreateCharacterClassesTable < ActiveRecord::Migration[5.2]
+class CreateBattleClassesTable < ActiveRecord::Migration[5.2]
   def change
-    create_table :character_classes do |t|
+    create_table :battle_classes do |t|
       t.string :name
       t.string :picture
       t.integer :hit_points
