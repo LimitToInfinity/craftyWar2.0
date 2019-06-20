@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2019_06_19_164715) do
     t.string "name"
     t.integer "hit_points"
     t.integer "attack_power"
+    t.string "picture"
   end
 
   create_table "characters", force: :cascade do |t|
@@ -38,10 +39,12 @@ ActiveRecord::Schema.define(version: 2019_06_19_164715) do
 
   create_table "professions", force: :cascade do |t|
     t.string "name"
+    t.string "picture"
   end
 
   create_table "races", force: :cascade do |t|
     t.string "name"
+    t.string "picture"
   end
 
   create_table "users", force: :cascade do |t|

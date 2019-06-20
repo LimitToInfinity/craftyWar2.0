@@ -4,6 +4,7 @@ class CreateCharacterClassesTable < ActiveRecord::Migration[5.2]
       t.string :name
       t.integer :hit_points
       t.integer :attack_power
+      t.string :picture
     end
   end
 end
