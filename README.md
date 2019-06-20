@@ -5,6 +5,13 @@ aka Module 1 with Tri & Ahmed
 
 Welcome to the World of Crafty War, where characters are made and destroyed. Battles are won and lost. A world where you can use your imagination. Enter at your own risk!
 
+![Warrior](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/warrior.png)
+![Troll](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/troll.jpg)
+![Shaman](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/shaman.jpg)
+![Tauren](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/tauren.jpg)
+![Skinner](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/skinner.png)
+![Druid](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/druid.jpg)
+
 Installation instructions:
 1) Install NPM and Node:
   a) https://www.npmjs.com/get-npm.
