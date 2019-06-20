@@ -241,7 +241,9 @@ end
 def character_menu(user_match)
     puts ""
     puts "Your characters:".light_yellow
-    puts user_match.characters.map {|character| puts character.name.light_red.on_black}.compact
+    user_match.characters.each.with_index(1) do |character, index|
+        puts "#{index}. #{character.name}".light_red.on_black
+    end
     character_choice = get_character_name(user_match)
     system("clear")
     display_character_stats(character_choice)
@@ -252,11 +254,19 @@ def get_character_name(user_match)
     puts ""
     puts "Choose your Character:".light_yellow
     user_input = gets.strip
-    character_match = user_match.characters.find {|character| character.name.downcase == user_input.downcase}
-    if !character_match
-        get_character_name(user_match)
+    if user_input.to_i == 0
+        character_match = user_match.characters.find do |character|
+            character.name.downcase == user_input.downcase
+        end
+        if !character_match
+            get_character_name(user_match)
+        else
+            character_match
+        end
+    elsif user_input.to_i >= 1 && user_input.to_i <= user_match.characters.size
+        user_match.characters[user_input.to_i - 1]
     else
-        character_match
+        get_character_name(user_match)
     end
 end
 
