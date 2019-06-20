@@ -26,7 +26,7 @@ def main_menu
 end
 
 def welcome
-    system("imgcat ./lib/pic/Opening.jpg")
+    system("imgcat ./lib/pic/opening.jpg")
     puts ""
     puts "Welcome to the World of Crafty War".black.on_red
     puts "Choose your DESTINY!".light_red.on_black.blink
@@ -58,9 +58,19 @@ def new_user
     puts ""
     puts "Choose your user name:".light_yellow
     new_user_name = gets.strip
-    new_user = User.create(name: new_user_name)
-    system("clear")
-    existing_user_menu(new_user)
+    user_match = User.all.find do |user|
+        new_user_name.downcase == user.name.downcase
+    end
+    if user_match
+        system("clear")
+        puts ""
+        puts "User #{new_user_name} already exists!".light_red.on_black
+        new_user
+    else
+        new_user = User.create(name: new_user_name)
+        system("clear")
+        existing_user_menu(new_user)
+    end
 end
 
 def exit_message
@@ -106,37 +116,66 @@ end
 def character_creation(user_match)
 
     puts ""
-    puts "Enter Character name:".light_cyan.on_blue
+    puts "Enter Character name:".light_yellow.on_red
     new_character_name = gets.strip
 
-    puts ""
-    puts "Races:".light_cyan.on_blue
-    Race.all.each.with_index(1) {|race, index| puts "#{index}. #{race.name}".light_cyan.on_blue}
-    new_race = get_race
-    system("imgcat ./lib/pic/#{new_race.picture}")
+    character_match = Character.all.find do |character|
+        new_character_name.downcase == character.name.downcase
+    end
     
-    puts ""
-    puts "Classes:".light_cyan.on_blue
-    CharacterClass.all.each.with_index(1) {|character, index| puts "#{index}. #{character.name}".light_cyan.on_blue}
-    new_character_class = get_character_class
-    system("imgcat ./lib/pic/#{new_character_class.picture}")
+    if character_match
+        system("clear")
+        puts ""
+        puts "Character #{new_character_name} already exists!".light_red.on_black
+        character_creation(user_match)
+    else
+        puts ""
+        puts "Races:".light_yellow.on_red
+        Race.all.each.with_index(1) {|race, index| puts "#{index}. #{race.name}".light_cyan.on_blue}
+        new_race = get_race
+        
+        system("clear")
+        puts ""
+        puts "Character - #{new_character_name}".black.on_red
+        puts ""
+        puts "Race - #{new_race.name}".light_green.on_black
+        system("imgcat ./lib/pic/#{new_race.picture}")
+        
+        puts ""
+        puts "Classes:".light_yellow.on_red
+        CharacterClass.all.each.with_index(1) do |character, index|
+            puts "#{index}. #{character.name}".light_cyan.on_blue
+            puts "Hit Points: #{character.hit_points}, Attack Power: #{character.attack_power}".light_yellow
+        end
+        new_character_class = get_character_class
+        
+        system("clear")
+        puts ""
+        puts "Character - #{new_character_name}".black.on_red
+        puts ""
+        puts "Race - #{new_race.name}".light_green.on_black
+        system("imgcat ./lib/pic/#{new_race.picture}")
+        puts ""
+        puts "Class - #{new_character_class.name}".light_green.on_black
+        system("imgcat ./lib/pic/#{new_character_class.picture}")
+        
+        puts ""
+        puts "Professions:".light_yellow.on_red
+        Profession.all.each.with_index(1) {|profession, index| puts "#{index}. #{profession.name}".light_cyan.on_blue}
+        new_profession = get_profession
+        system("imgcat ./lib/pic/#{new_profession.picture}")
     
-    puts ""
-    puts "Professions:".light_cyan.on_blue
-    Profession.all.each.with_index(1) {|profession, index| puts "#{index}. #{profession.name}".light_cyan.on_blue}
-    new_profession = get_profession
-    system("imgcat ./lib/pic/#{new_profession.picture}")
-
-    new_character = Character.create(name: new_character_name, race: new_race, character_class: new_character_class, profession: new_profession, user: user_match)
-
-    # system("clear")
-    display_character_stats(new_character)
-    character_option_menu(new_character)
+        new_character = Character.create(name: new_character_name, race: new_race, character_class: new_character_class, profession: new_profession, user: user_match)
+    
+        system("clear")
+        display_character_stats(new_character)
+        character_option_menu(new_character)
+    end
 end
 
 def get_race
     puts ""
-    puts "Choose your Race:".light_cyan.on_blue
+    puts "Choose your Race:".light_yellow.on_red
     user_input = gets.strip
     if user_input.to_i == 0
         race_match = Race.all.find {|race| race.name.downcase == user_input.downcase}
@@ -154,7 +193,7 @@ end
 
 def get_character_class
     puts ""
-    puts "Choose your Class:".light_cyan.on_blue
+    puts "Choose your Class:".light_yellow.on_red
     user_input = gets.strip
     if user_input.to_i == 0
         character_class_match = CharacterClass.all.find {|character_class| character_class.name.downcase == user_input.downcase}
@@ -172,7 +211,7 @@ end
 
 def get_profession
     puts ""
-    puts "Choose your Profession:".light_cyan.on_blue
+    puts "Choose your Profession:".light_yellow.on_red
     user_input = gets.strip
     if user_input.to_i == 0
         profession_match = Profession.all.find {|profession| profession.name.downcase == user_input.downcase}
@@ -227,9 +266,8 @@ def character_option_menu(character_choice)
         battle_menu(character_choice)
     when "2"
         puts ""
-        puts "Enter new name".light_yellow
+        puts "#{character_choice.name}, enter your new name:".light_yellow
         new_name = gets.strip
-        puts ""
         character_choice.update(name: new_name)
         system("clear")
         character_option_menu(character_choice)
@@ -278,7 +316,7 @@ def display_character_stats(character_choice)
     puts "Profession - #{character_choice.profession.name}".light_green.on_black
     system("imgcat ./lib/pic/#{character_choice.profession.picture}")
 
-    puts "Hit Point - #{character_choice.character_class.hit_points}".light_green.on_black
+    puts "Hit Points - #{character_choice.character_class.hit_points}".light_green.on_black
 
     puts "Attack Power - #{character_choice.character_class.attack_power}".light_green.on_black
     puts ""
@@ -319,8 +357,8 @@ end
 
 def attack(name, hp, ap, monster_name, monster_hp, monster_ap)
     puts ""
-    puts "Name: #{name}, HP: #{hp}".light_cyan.on_black
-    puts "Monster: #{monster_name}, HP: #{monster_hp}".black.on_light_red
+    puts "#{name}'s remaining HP: #{hp}".light_cyan.on_black
+    puts "#{monster_name}'s remaining HP: #{monster_hp}".black.on_light_red
     
     puts ""
     puts "1. Attack".light_yellow.on_black
@@ -332,8 +370,8 @@ def attack(name, hp, ap, monster_name, monster_hp, monster_ap)
     
     system("clear")
     puts ""
-    puts "#{name}'s attack: #{attack}".light_cyan.on_black
-    puts "#{monster_name}'s attack: #{monster_attack}".black.on_light_red
+    puts "#{name} attacks for #{attack} damage!".light_cyan.on_black
+    puts "#{monster_name} causes #{monster_attack} damage".black.on_light_red
     
     hp -= monster_attack
     monster_hp -= attack
@@ -341,15 +379,15 @@ def attack(name, hp, ap, monster_name, monster_hp, monster_ap)
     if(hp <= 0 && monster_hp > 0)
         system("clear")
         puts ""
-        puts "You Lose!".light_red.on_black
+        puts "#{monster_name} slayed #{name}".light_red.on_black
     elsif(hp > 0 && monster_hp <= 0)
         system("clear")
         puts ""
-        puts "You Win!".light_green.on_black
+        puts "You decimated #{monster_name}!".light_green.on_black
     elsif(hp <= 0 && monster_hp <= 0)
         system("clear")
         puts ""
-        puts "It's a tie.".light_white.on_black
+        puts "You killed each other".light_white.on_black
     else
         attack(name, hp, ap, monster_name, monster_hp, monster_ap)
     end
