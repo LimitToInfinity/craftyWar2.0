@@ -8,6 +8,7 @@ class CreateCharactersTable < ActiveRecord::Migration[5.2]
       t.references :user, foreign_key: true
       t.integer :hit_points
       t.integer :attack_power
+      t.integer :defense
     end
   end
 end

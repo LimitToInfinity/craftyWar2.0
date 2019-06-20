@@ -5,6 +5,7 @@ class CreateBattleClassesTable < ActiveRecord::Migration[5.2]
       t.string :picture
       t.integer :hit_points
       t.integer :attack_power
+      t.integer :defense
     end
   end
 end

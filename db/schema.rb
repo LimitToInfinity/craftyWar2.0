@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 2019_06_19_164715) do
     t.string "picture"
     t.integer "hit_points"
     t.integer "attack_power"
+    t.integer "defense"
   end
 
   create_table "characters", force: :cascade do |t|
@@ -27,6 +28,7 @@ ActiveRecord::Schema.define(version: 2019_06_19_164715) do
     t.integer "user_id"
     t.integer "hit_points"
     t.integer "attack_power"
+    t.integer "defense"
     t.index ["battle_class_id"], name: "index_characters_on_battle_class_id"
     t.index ["profession_id"], name: "index_characters_on_profession_id"
     t.index ["race_id"], name: "index_characters_on_race_id"
@@ -37,6 +39,7 @@ ActiveRecord::Schema.define(version: 2019_06_19_164715) do
     t.string "name"
     t.integer "hit_points"
     t.integer "attack_power"
+    t.integer "defense"
   end
 
   create_table "professions", force: :cascade do |t|
@@ -49,6 +52,7 @@ ActiveRecord::Schema.define(version: 2019_06_19_164715) do
     t.string "picture"
     t.integer "hit_points"
     t.integer "attack_power"
+    t.integer "defense"
   end
 
   create_table "users", force: :cascade do |t|

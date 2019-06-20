@@ -144,11 +144,12 @@ def character_creation(user_match)
         puts "Races:".light_yellow.on_red
         Race.all.each.with_index(1) do |race, index|
             puts "#{index}. #{race.name}".light_cyan.on_blue
-            puts "Hit Points: #{race.hit_points}, Attack Power: #{race.attack_power}".light_yellow
+            puts "Hit Points: #{race.hit_points}, Attack Power: #{race.attack_power}, Defense: #{race.defense}".light_yellow
         end
         new_race = get_race
         race_hp = new_race.hit_points
         race_ap = new_race.attack_power
+        race_d = new_race.defense
         
         
         system("clear")
@@ -162,11 +163,12 @@ def character_creation(user_match)
         puts "Classes:".light_yellow.on_red
         BattleClass.all.each.with_index(1) do |battle_class, index|
             puts "#{index}. #{battle_class.name}".light_cyan.on_blue
-            puts "Hit Points: #{battle_class.hit_points}, Attack Power: #{battle_class.attack_power}".light_yellow
+            puts "Hit Points: #{battle_class.hit_points}, Attack Power: #{battle_class.attack_power}, Defense: #{battle_class.defense}".light_yellow
         end
         new_battle_class = get_battle_class
         bc_hp = new_battle_class.hit_points
         bc_ap = new_battle_class.attack_power
+        bc_d = new_battle_class.defense
         
         system("clear")
         puts ""
@@ -186,7 +188,10 @@ def character_creation(user_match)
     
         new_hp = race_hp + bc_hp
         new_ap = race_ap + bc_ap
-        new_character = Character.create(name: new_character_name, race: new_race, battle_class: new_battle_class, profession: new_profession, user: user_match, hit_points: new_hp, attack_power: new_ap)
+        new_d = race_d + bc_d
+        new_character = Character.create(name: new_character_name, race: new_race,
+            battle_class: new_battle_class, profession: new_profession, user: user_match,
+            hit_points: new_hp, attack_power: new_ap, defense: new_d)
     
         system("clear")
         display_character_stats(new_character)
@@ -364,6 +369,9 @@ def display_character_stats(character_choice)
     puts "Hit Points - #{character_choice.hit_points}".light_green.on_black
 
     puts "Attack Power - #{character_choice.attack_power}".light_green.on_black
+    
+    puts "Defense - #{character_choice.defense}".light_green.on_black
+    
     puts ""
 end
 
@@ -393,14 +401,16 @@ def battle_arena(character_choice)
     
     ap = character_choice.attack_power
     hp = character_choice.hit_points
+    d = character_choice.defense
     monster_ap = monster.attack_power
     monster_hp = monster.hit_points
+    monster_d = monster.defense
     
-    attack(character_choice.name, hp, ap, monster.name, monster_hp, monster_ap)
+    attack(character_choice.name, hp, ap, d, monster.name, monster_hp, monster_ap, monster_d)
     character_option_menu(character_choice)
 end
 
-def attack(name, hp, ap, monster_name, monster_hp, monster_ap)
+def attack(name, hp, ap, d, monster_name, monster_hp, monster_ap, monster_d)
     puts ""
     puts "#{name}'s remaining HP: #{hp}".light_cyan.on_black
     puts "#{monster_name}'s remaining HP: #{monster_hp}".black.on_light_red
@@ -411,15 +421,26 @@ def attack(name, hp, ap, monster_name, monster_hp, monster_ap)
     gets.strip
     
     attack = rand(1..ap)
+    defense = rand(1..d)
     monster_attack = rand(1..monster_ap)
+    monster_defense = rand(1..monster_d)
     
     system("clear")
     puts ""
     puts "#{name} attacks for #{attack} damage!".light_cyan.on_black
+    puts "#{name} defends for #{defense} damage!".light_cyan.on_black
     puts "#{monster_name} causes #{monster_attack} damage".black.on_light_red
+    puts "#{monster_name} blocks #{monster_defense} damage".black.on_light_red
     
-    hp -= monster_attack
-    monster_hp -= attack
+    character_damage_taken = monster_attack - defense
+    monster_damage_taken = attack - monster_defense
+
+    if character_damage_taken > 0
+        hp -= character_damage_taken
+    end
+    if monster_damage_taken > 0
+        monster_hp -= monster_damage_taken
+    end
     
     if(hp <= 0 && monster_hp > 0)
         system("clear")
@@ -434,6 +455,6 @@ def attack(name, hp, ap, monster_name, monster_hp, monster_ap)
         puts ""
         puts "You killed each other".light_white.on_black
     else
-        attack(name, hp, ap, monster_name, monster_hp, monster_ap)
+        attack(name, hp, ap, d, monster_name, monster_hp, monster_ap, monster_d)
     end
 end
