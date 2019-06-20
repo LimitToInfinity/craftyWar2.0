@@ -296,12 +296,7 @@ def character_option_menu(character_choice)
         system("clear")
         battle_menu(character_choice)
     when "2"
-        puts ""
-        puts "#{character_choice.name}, enter your new name:".light_yellow
-        new_name = gets.strip
-        character_choice.update(name: new_name)
-        system("clear")
-        character_option_menu(character_choice)
+        update_name(character_choice)
     when "3"
         system("clear")
         display_character_stats(character_choice)
@@ -332,21 +327,40 @@ def character_option_menu(character_choice)
     end
 end
 
+def update_name(character_choice) 
+    puts ""
+    puts "#{character_choice.name}, enter your new name:".light_yellow
+    new_name = gets.strip
+    name_match = Character.all.find do |character|
+        new_name.downcase == character.name.downcase
+    end
+    if name_match
+        system("clear")
+        puts ""
+        puts "Character #{new_name} already exists!".light_red.on_black
+        update_name(character_choice)
+    else
+        character_choice.update(name: new_name)
+        system("clear")
+        character_option_menu(character_choice)
+    end
+end
+
 def display_character_stats(character_choice)
     puts ""
-
+    
     puts "Character - #{character_choice.name}".black.on_red
     puts ""
-
+    
     puts "Race - #{character_choice.race.name}".light_green.on_black
     system("imgcat ./lib/pic/#{character_choice.race.picture}")
-
+    
     puts "Class - #{character_choice.battle_class.name}".light_green.on_black
     system("imgcat ./lib/pic/#{character_choice.battle_class.picture}")
-
+    
     puts "Profession - #{character_choice.profession.name}".light_green.on_black
     system("imgcat ./lib/pic/#{character_choice.profession.picture}")
-
+    
     puts "Hit Points - #{character_choice.hit_points}".light_green.on_black
 
     puts "Attack Power - #{character_choice.attack_power}".light_green.on_black
