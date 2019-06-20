@@ -1,5 +1,5 @@
 Race.delete_all
-CharacterClass.delete_all
+BattleClass.delete_all
 Profession.delete_all
 Character.delete_all
 User.delete_all
@@ -18,18 +18,18 @@ Race.create(name: "Goblin", hit_points: 2, attack_power: 2, picture: "goblin.jpg
 Race.create(name: "Orc", hit_points: 1, attack_power: 3, picture: "orc.jpg")
 Race.create(name: "Pandaren", hit_points: 2, attack_power: 2, picture: "pandaren.jpg")
 
-CharacterClass.create(name: "Druid", hit_points: 14, attack_power: 5, picture: "druid.jpg")
-CharacterClass.create(name: "Hunter", hit_points: 13, attack_power: 6, picture: "hunter.jpg")
-CharacterClass.create(name: "Mage", hit_points: 10, attack_power: 10, picture: "mage.jpg")
-CharacterClass.create(name: "Paladin", hit_points: 20, attack_power: 5, picture: "paladin.jpg")
-CharacterClass.create(name: "Priest", hit_points: 14, attack_power: 6, picture: "priest.jpg")
-CharacterClass.create(name: "Rogue", hit_points: 12, attack_power: 8, picture: "rogue.jpg")
-CharacterClass.create(name: "Shaman", hit_points: 11, attack_power: 7, picture: "shaman.jpg")
-CharacterClass.create(name: "Warlock", hit_points: 15, attack_power: 6, picture: "warlock.jpg")
-CharacterClass.create(name: "Warrior", hit_points: 16, attack_power: 6, picture: "warrior.jpg")
-CharacterClass.create(name: "Death Knight", hit_points: 17, attack_power: 7, picture: "death_knight.jpg")
-CharacterClass.create(name: "Monk", hit_points: 18, attack_power: 4, picture: "monk.jpg")
-CharacterClass.create(name: "Demon Hunter", hit_points: 11, attack_power: 10, picture: "demon_hunter.jpg")
+BattleClass.create(name: "Druid", hit_points: 14, attack_power: 5, picture: "druid.jpg")
+BattleClass.create(name: "Hunter", hit_points: 13, attack_power: 6, picture: "hunter.jpg")
+BattleClass.create(name: "Mage", hit_points: 10, attack_power: 10, picture: "mage.jpg")
+BattleClass.create(name: "Paladin", hit_points: 20, attack_power: 5, picture: "paladin.jpg")
+BattleClass.create(name: "Priest", hit_points: 14, attack_power: 6, picture: "priest.jpg")
+BattleClass.create(name: "Rogue", hit_points: 12, attack_power: 8, picture: "rogue.jpg")
+BattleClass.create(name: "Shaman", hit_points: 11, attack_power: 7, picture: "shaman.jpg")
+BattleClass.create(name: "Warlock", hit_points: 15, attack_power: 6, picture: "warlock.jpg")
+BattleClass.create(name: "Warrior", hit_points: 16, attack_power: 6, picture: "warrior.jpg")
+BattleClass.create(name: "Death Knight", hit_points: 17, attack_power: 7, picture: "death_knight.jpg")
+BattleClass.create(name: "Monk", hit_points: 18, attack_power: 4, picture: "monk.jpg")
+BattleClass.create(name: "Demon Hunter", hit_points: 11, attack_power: 10, picture: "demon_hunter.jpg")
 
 Profession.create(name: "Alchemist", picture: "alchemist.png")
 Profession.create(name: "Blacksmith", picture: "blacksmith.jpg")

@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2019_06_19_164715) do
 
-  create_table "character_classes", force: :cascade do |t|
+  create_table "battle_classes", force: :cascade do |t|
     t.string "name"
     t.string "picture"
     t.integer "hit_points"
@@ -21,13 +21,13 @@ ActiveRecord::Schema.define(version: 2019_06_19_164715) do
 
   create_table "characters", force: :cascade do |t|
     t.string "name"
-    t.integer "character_class_id"
+    t.integer "battle_class_id"
     t.integer "profession_id"
     t.integer "race_id"
     t.integer "user_id"
     t.integer "hit_points"
     t.integer "attack_power"
-    t.index ["character_class_id"], name: "index_characters_on_character_class_id"
+    t.index ["battle_class_id"], name: "index_characters_on_battle_class_id"
     t.index ["profession_id"], name: "index_characters_on_profession_id"
     t.index ["race_id"], name: "index_characters_on_race_id"
     t.index ["user_id"], name: "index_characters_on_user_id"
