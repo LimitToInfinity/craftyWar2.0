@@ -1,6 +1,8 @@
 World of Crafty War
 aka Module 1 with Tri & Ahmed
 
+![Unsplash Ominous Scene](https://images.unsplash.com/photo-1496526311033-8a80ae14a1f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)
+
 Welcome to the World of Crafty War, where characters are made and destroyed. Battles are won and lost. A world where you can use your imagination. Enter at your own risk!
 
 Installation instructions:
