@@ -38,18 +38,29 @@ end
 def existing_user
     puts ""
     puts "Current users:".light_yellow
-    User.all.each {|user| puts user.name.light_red.on_black}
+    User.all.each.with_index(1) do |user, index|
+        puts "#{index}. #{user.name}".light_red.on_black
+    end
     puts ""
     puts "Enter your user name:".light_yellow
-    user_name = gets.strip
-    user_match = User.all.find do |user|
-        user_name.downcase == user.name.downcase
-    end
-    if user_match
+    user_input = gets.strip
+    if user_input.to_i == 0
+        user_match = User.all.find do |user|
+            user_input.downcase == user.name.downcase
+        end
+        if user_match
+            system("clear")
+            existing_user_menu(user_match)
+        else
+            system("clear")
+            main_menu
+        end
+    elsif user_input.to_i >= 1 && user_input.to_i <= User.all.size
         system("clear")
-        existing_user_menu(user_match)
+        existing_user_menu(User.all[user_input.to_i - 1])
     else
         system("clear")
+        puts "Please enter a valid user.".light_yellow
         main_menu
     end
 end
