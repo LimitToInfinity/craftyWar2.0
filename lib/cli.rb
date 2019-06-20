@@ -406,15 +406,18 @@ def battle_arena(character_choice)
     monster_hp = monster.hit_points
     monster_d = monster.defense
     
-    attack(character_choice.name, hp, ap, d, monster.name, monster_hp, monster_ap, monster_d)
+    attack(character_choice.name, hp, ap, d, monster.name, monster_hp, monster_ap, monster_d, monster)
     character_option_menu(character_choice)
 end
 
-def attack(name, hp, ap, d, monster_name, monster_hp, monster_ap, monster_d)
+def attack(name, hp, ap, d, monster_name, monster_hp, monster_ap, monster_d, monster)
     puts ""
     puts "#{name}'s remaining HP: #{hp}".light_cyan.on_black
     puts "#{monster_name}'s remaining HP: #{monster_hp}".black.on_light_red
     
+    puts ""
+    puts "#{monster_name}: #{monster.monster_verbages.sample.verbage}".light_red.on_black
+
     puts ""
     puts "1. Attack".light_yellow.on_black
     
@@ -462,6 +465,6 @@ def attack(name, hp, ap, d, monster_name, monster_hp, monster_ap, monster_d)
         puts ""
         puts "You killed each other".light_white.on_black
     else
-        attack(name, hp, ap, d, monster_name, monster_hp, monster_ap, monster_d)
+        attack(name, hp, ap, d, monster_name, monster_hp, monster_ap, monster_d, monster)
     end
 end
