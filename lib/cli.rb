@@ -425,22 +425,29 @@ def attack(name, hp, ap, d, monster_name, monster_hp, monster_ap, monster_d)
     monster_attack = rand(1..monster_ap)
     monster_defense = rand(1..monster_d)
     
-    system("clear")
-    puts ""
-    puts "#{name} attacks for #{attack} damage!".light_cyan.on_black
-    puts "#{name} defends for #{defense} damage!".light_cyan.on_black
-    puts "#{monster_name} causes #{monster_attack} damage".black.on_light_red
-    puts "#{monster_name} blocks #{monster_defense} damage".black.on_light_red
-    
     character_damage_taken = monster_attack - defense
     monster_damage_taken = attack - monster_defense
+    
+    if character_damage_taken < 0
+        character_damage_taken = 0
+    end
+    if monster_damage_taken < 0
+        monster_damage_taken = 0
+    end
 
-    if character_damage_taken > 0
-        hp -= character_damage_taken
-    end
-    if monster_damage_taken > 0
-        monster_hp -= monster_damage_taken
-    end
+    system("clear")
+    puts ""
+    
+    puts "#{name} ".light_cyan.on_black + "attacks".light_red.on_black + " #{monster_name} for #{attack} damage!".light_cyan.on_black
+    puts "BUT... #{monster_name} ".black.on_light_red + "blocks".light_yellow.on_light_red + " #{monster_defense} damage".black.on_light_red
+    puts "#{monster_name} ".black.on_light_red + "bleeds".light_yellow.on_light_red + " for #{monster_damage_taken} damage".black.on_light_red
+    puts ""
+    puts "#{monster_name} ".black.on_light_red + "causes".light_yellow.on_light_red + " #{name} #{monster_attack} damage".black.on_light_red
+    puts "#{name} valiantly ".light_cyan.on_black + "defends".light_red.on_black + " for #{defense} damage!".light_cyan.on_black
+    puts "#{name} ".light_cyan.on_black + "grunts".light_red.on_black + " for #{character_damage_taken} damage".light_cyan.on_black
+
+    hp -= character_damage_taken
+    monster_hp -= monster_damage_taken
     
     if(hp <= 0 && monster_hp > 0)
         system("clear")
