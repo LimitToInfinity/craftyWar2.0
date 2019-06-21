@@ -3,25 +3,25 @@ def main_menu
     puts welcome
     user_input = gets.strip
     case user_input
-        when "1"
-            if User.all.size > 0
-                system("clear")
-                existing_user
-            else
-                puts ""
-                system("clear")
-                puts "There are no users!".light_red.on_black
-                main_menu
-            end
-        when "2"
+    when "1"
+        if User.count > 0
             system("clear")
-            new_user
-        when "3"
-            system("clear")
-            exit_message
+            existing_user
         else
+            puts ""
             system("clear")
+            puts "There are no users!".light_red.on_black
             main_menu
+        end
+    when "2"
+        system("clear")
+        new_user
+    when "3"
+        system("clear")
+        exit_message
+    else
+        system("clear")
+        main_menu
     end
 end
 
@@ -35,43 +35,49 @@ def welcome
     puts "3. Exit".light_cyan.on_black
 end
 
+def exit_message
+    puts ""
+    puts "They always come back!".black.on_light_yellow
+    puts ""
+end
+
 def existing_user
     puts ""
     puts "Current users:".light_yellow
+    
     User.all.each.with_index(1) do |user, index|
         puts "#{index}. #{user.name}".light_red.on_black
-    end
-    puts ""
-    puts "Enter your user name:".light_yellow
-    user_input = gets.strip
-    if user_input.to_i == 0
-        user_match = User.all.find do |user|
-            user_input.downcase == user.name.downcase
-        end
-        if user_match
+    end 
+    
+    user_match = nil
+    while user_match.nil?
+        
+        puts ""
+        puts "Enter your user name:".light_yellow
+        
+        user_input = gets.strip
+        
+        if user_input.to_i == 0
+            user_match = User.all.find do |user|
+                user_input.downcase == user.name.downcase
+            end
+        elsif user_input.to_i >= 1 && user_input.to_i <= User.count
             system("clear")
-            existing_user_menu(user_match)
-        else
-            system("clear")
-            main_menu
+            user_match = User.all[user_input.to_i - 1]
         end
-    elsif user_input.to_i >= 1 && user_input.to_i <= User.all.size
-        system("clear")
-        existing_user_menu(User.all[user_input.to_i - 1])
-    else
-        system("clear")
-        puts "Please enter a valid user.".light_yellow
-        main_menu
     end
+    existing_user_menu(user_match)
 end
 
 def new_user
     puts ""
     puts "Choose your user name:".light_yellow
     new_user_name = gets.strip
+    
     user_match = User.all.find do |user|
         new_user_name.downcase == user.name.downcase
     end
+
     if user_match
         system("clear")
         puts ""
@@ -84,12 +90,6 @@ def new_user
     end
 end
 
-def exit_message
-    puts ""
-    puts "They always come back!".black.on_light_yellow
-    puts ""
-end
-
 def existing_user_menu(user_match)
     user_match.reload
     puts ""
@@ -99,12 +99,13 @@ def existing_user_menu(user_match)
     puts "3. Main Menu".light_yellow
     puts "4. Exit".light_cyan.on_black
     user_input = gets.strip
+    
     case user_input
         when "1"
             system("clear")
             character_creation(user_match)
         when "2"
-            if user_match.characters.size > 0
+            if user_match.characters.count > 0
                 system("clear")
                 character_menu(user_match)
             else
@@ -191,21 +192,19 @@ def get_race
         puts "Hit Points: #{race.hit_points}, Attack Power: #{race.attack_power}, Defense: #{race.defense}".light_yellow
     end
     
-    puts ""
-    puts "Choose your Race:".light_yellow.on_red
-    user_input = gets.strip
-    if user_input.to_i == 0
-        race_match = Race.all.find {|race| race.name.downcase == user_input.downcase}
-        if !race_match
-            get_race
-        else
-            race_match
+    race_match = nil
+    while race_match.nil?
+        puts ""
+        puts "Choose your Race:".light_yellow.on_red
+        user_input = gets.strip
+        
+        if user_input.to_i == 0
+            race_match = Race.find_by(name: user_input.downcase.titlecase)
+        elsif user_input.to_i >= 1 && user_input.to_i <= Race.count
+            race_match = Race.all[user_input.to_i - 1]
         end
-    elsif user_input.to_i >= 1 && user_input.to_i <= Race.all.size
-        Race.all[user_input.to_i - 1]
-    else
-        get_race 
     end
+    race_match
 end
 
 def get_battle_class
@@ -216,21 +215,19 @@ def get_battle_class
         puts "Hit Points: #{battle_class.hit_points}, Attack Power: #{battle_class.attack_power}, Defense: #{battle_class.defense}".light_yellow
     end
     
-    puts ""
-    puts "Choose your Class:".light_yellow.on_red
-    user_input = gets.strip
-    if user_input.to_i == 0
-        battle_class_match = BattleClass.all.find {|battle_class| battle_class.name.downcase == user_input.downcase}
-        if !battle_class_match
-            get_battle_class
-        else
-            battle_class_match
+    battle_class_match = nil
+    while battle_class_match.nil?
+        puts ""
+        puts "Choose your Class:".light_yellow.on_red
+        user_input = gets.strip
+        
+        if user_input.to_i == 0
+            battle_class_match = BattleClass.find_by(name: user_input.downcase.titlecase)
+        elsif user_input.to_i >= 1 && user_input.to_i <= BattleClass.count
+            battle_class_match = BattleClass.all[user_input.to_i - 1]
         end
-    elsif user_input.to_i >= 1 && user_input.to_i <= BattleClass.all.size
-        BattleClass.all[user_input.to_i - 1]
-    else
-        get_battle_class
     end
+    battle_class_match
 end
 
 def get_profession
@@ -238,21 +235,19 @@ def get_profession
     puts "Professions:".light_yellow.on_red
     Profession.all.each.with_index(1) {|profession, index| puts "#{index}. #{profession.name}".light_cyan.on_blue}
     
-    puts ""
-    puts "Choose your Profession:".light_yellow.on_red
-    user_input = gets.strip
-    if user_input.to_i == 0
-        profession_match = Profession.all.find {|profession| profession.name.downcase == user_input.downcase}
-        if !profession_match
-            get_profession
-        else
-            profession_match
+    profession_match = nil
+    while profession_match.nil?
+        puts ""
+        puts "Choose your Profession:".light_yellow.on_red
+        user_input = gets.strip
+        
+        if user_input.to_i == 0
+            profession_match = Profession.find_by(name: user_input.downcase.titlecase)
+        elsif user_input.to_i >= 1 && user_input.to_i <= Profession.count
+            profession_match = Profession.all[user_input.to_i - 1]
         end
-    elsif user_input.to_i >= 1 && user_input.to_i <= Profession.all.size
-        Profession.all[user_input.to_i - 1]
-    else
-        get_profession
     end
+    profession_match
 end
 
 def character_menu(user_match)
@@ -280,7 +275,7 @@ def get_character_name(user_match)
         else
             character_match
         end
-    elsif user_input.to_i >= 1 && user_input.to_i <= user_match.characters.size
+    elsif user_input.to_i >= 1 && user_input.to_i <= user_match.characters.count
         user_match.characters[user_input.to_i - 1]
     else
         get_character_name(user_match)
@@ -481,14 +476,14 @@ def weapon_select
     end
 
     weapon_match = nil
-    while weapon_match == nil
+    while weapon_match.nil?
         
         puts "Equip yourself:".red.on_black
         weapon_choice = gets.strip
         
         if weapon_choice.to_i == 0
             weapon_match = Weapon.all.find {|weapon| weapon_choice.downcase == weapon.name.downcase}
-        elsif weapon_choice.to_i >= 1 && weapon_choice.to_i <= Weapon.all.size
+        elsif weapon_choice.to_i >= 1 && weapon_choice.to_i <= Weapon.count
             weapon_match = Weapon.all[weapon_choice.to_i - 1]
         end
     end
