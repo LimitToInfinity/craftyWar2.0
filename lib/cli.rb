@@ -140,17 +140,10 @@ def character_creation(user_match)
         puts "Character #{new_character_name} already exists!".light_red.on_black
         character_creation(user_match)
     else
-        puts ""
-        puts "Races:".light_yellow.on_red
-        Race.all.each.with_index(1) do |race, index|
-            puts "#{index}. #{race.name}".light_cyan.on_blue
-            puts "Hit Points: #{race.hit_points}, Attack Power: #{race.attack_power}, Defense: #{race.defense}".light_yellow
-        end
         new_race = get_race
         race_hp = new_race.hit_points
         race_ap = new_race.attack_power
         race_d = new_race.defense
-        
         
         system("clear")
         puts ""
@@ -159,12 +152,6 @@ def character_creation(user_match)
         puts "Race - #{new_race.name}".light_green.on_black
         system("imgcat ./lib/pic/#{new_race.picture}")
         
-        puts ""
-        puts "Classes:".light_yellow.on_red
-        BattleClass.all.each.with_index(1) do |battle_class, index|
-            puts "#{index}. #{battle_class.name}".light_cyan.on_blue
-            puts "Hit Points: #{battle_class.hit_points}, Attack Power: #{battle_class.attack_power}, Defense: #{battle_class.defense}".light_yellow
-        end
         new_battle_class = get_battle_class
         bc_hp = new_battle_class.hit_points
         bc_ap = new_battle_class.attack_power
@@ -180,9 +167,6 @@ def character_creation(user_match)
         puts "Class - #{new_battle_class.name}".light_green.on_black
         system("imgcat ./lib/pic/#{new_battle_class.picture}")
         
-        puts ""
-        puts "Professions:".light_yellow.on_red
-        Profession.all.each.with_index(1) {|profession, index| puts "#{index}. #{profession.name}".light_cyan.on_blue}
         new_profession = get_profession
         system("imgcat ./lib/pic/#{new_profession.picture}")
     
@@ -200,6 +184,13 @@ def character_creation(user_match)
 end
 
 def get_race
+    puts ""
+    puts "Races:".light_yellow.on_red
+    Race.all.each.with_index(1) do |race, index|
+        puts "#{index}. #{race.name}".light_cyan.on_blue
+        puts "Hit Points: #{race.hit_points}, Attack Power: #{race.attack_power}, Defense: #{race.defense}".light_yellow
+    end
+    
     puts ""
     puts "Choose your Race:".light_yellow.on_red
     user_input = gets.strip
@@ -219,6 +210,13 @@ end
 
 def get_battle_class
     puts ""
+    puts "Classes:".light_yellow.on_red
+    BattleClass.all.each.with_index(1) do |battle_class, index|
+        puts "#{index}. #{battle_class.name}".light_cyan.on_blue
+        puts "Hit Points: #{battle_class.hit_points}, Attack Power: #{battle_class.attack_power}, Defense: #{battle_class.defense}".light_yellow
+    end
+    
+    puts ""
     puts "Choose your Class:".light_yellow.on_red
     user_input = gets.strip
     if user_input.to_i == 0
@@ -236,6 +234,10 @@ def get_battle_class
 end
 
 def get_profession
+    puts ""
+    puts "Professions:".light_yellow.on_red
+    Profession.all.each.with_index(1) {|profession, index| puts "#{index}. #{profession.name}".light_cyan.on_blue}
+    
     puts ""
     puts "Choose your Profession:".light_yellow.on_red
     user_input = gets.strip
@@ -289,7 +291,7 @@ def character_option_menu(character_choice)
     puts ""
     puts "Prepare yourself for battle #{character_choice.name}!".black.on_red.blink
     puts "1. Battle!".light_red.on_black
-    puts "2. Change Character name".light_yellow
+    puts "2. Edit Character".light_yellow
     puts "3. Display Character stats".light_yellow
     puts "4. Delete Character".light_yellow
     puts "5. User Menu".light_yellow
@@ -301,7 +303,8 @@ def character_option_menu(character_choice)
         system("clear")
         battle_menu(character_choice)
     when "2"
-        update_name(character_choice)
+        system("clear")
+        edit_character(character_choice)
     when "3"
         system("clear")
         display_character_stats(character_choice)
@@ -329,6 +332,53 @@ def character_option_menu(character_choice)
     else
         system("clear")
         character_option_menu(character_choice)
+    end
+end
+
+def edit_character(character_choice)
+    character_choice.reload
+    system("clear")
+    display_character_stats(character_choice)
+    puts ""
+    puts "1. Change Name".light_yellow
+    puts "2. Change Race".light_yellow
+    puts "3. Change Battle Class".light_yellow
+    puts "4. Change Profession".light_yellow
+    puts "5. Return to Character Menu".light_yellow
+
+    user_input = gets.strip
+
+    case user_input
+        when "1"
+            system("clear")
+            update_name(character_choice)
+            edit_character(character_choice)
+        when "2"
+            system("clear")
+            race_update = get_race
+            rhp_update = race_update.hit_points + character_choice.battle_class.hit_points
+            rap_update = race_update.attack_power + character_choice.battle_class.attack_power
+            rd_update = race_update.defense + character_choice.battle_class.defense
+            character_choice.update(race: race_update, hit_points: rhp_update, attack_power: rap_update, defense: rd_update)
+            edit_character(character_choice)
+        when "3"
+            system("clear")
+            bc_update = get_battle_class
+            bchp_update = bc_update.hit_points + character_choice.race.hit_points
+            bcap_update = bc_update.attack_power + character_choice.race.attack_power
+            bcd_update = bc_update.defense + character_choice.race.defense
+            character_choice.update(battle_class: bc_update, hit_points: bchp_update, attack_power: bcap_update, defense: bcd_update)
+            edit_character(character_choice)
+        when "4"
+            system("clear")
+            profession_update = get_profession
+            character_choice.update(profession: profession_update)
+            edit_character(character_choice)
+        when "5"
+            system("clear")
+            character_option_menu(character_choice)
+        else
+            edit_character(character_choice)
     end
 end
 
@@ -371,8 +421,6 @@ def display_character_stats(character_choice)
     puts "Attack Power - #{character_choice.attack_power}".light_green.on_black
     
     puts "Defense - #{character_choice.defense}".light_green.on_black
-    
-    puts ""
 end
 
 def battle_menu(character_choice)
@@ -397,36 +445,78 @@ def battle_menu(character_choice)
 end
 
 def battle_arena(character_choice)
+    
     monster = Monster.all.sample
     
-    ap = character_choice.attack_power
-    hp = character_choice.hit_points
-    d = character_choice.defense
-    monster_ap = monster.attack_power
-    monster_hp = monster.hit_points
-    monster_d = monster.defense
+    weapon = weapon_select
+    system("clear")
+    puts ""
+    puts "Weapon - #{weapon.name}".black.on_red
+    puts "Damage: #{weapon.damage}, Defense: #{weapon.defense}".light_yellow
+    system("imgcat ./lib/pic/#{weapon.picture}")
+
+    ap = character_choice.attack_power + weapon.damage
+    d = character_choice.defense + weapon.defense
+    if d < 0
+        d = 0
+    end
     
-    attack(character_choice.name, hp, ap, d, monster.name, monster_hp, monster_ap, monster_d, monster)
+    puts ""
+    puts "Character - #{character_choice.name}".black.on_red
+    puts "Hit Points - #{character_choice.hit_points}".light_green.on_black
+    puts "Attack Power - #{ap}".light_green.on_black
+    puts "Defense - #{d}".light_green.on_black
+    
+    attack(character_choice, character_choice.hit_points, monster, monster.hit_points, weapon)
+    
     character_option_menu(character_choice)
 end
 
-def attack(name, hp, ap, d, monster_name, monster_hp, monster_ap, monster_d, monster)
+def weapon_select
     puts ""
-    puts "#{name}'s remaining HP: #{hp}".light_cyan.on_black
-    puts "#{monster_name}'s remaining HP: #{monster_hp}".black.on_light_red
-    
-    puts ""
-    puts "#{monster_name}: #{monster.monster_verbages.sample.verbage}".light_red.on_black
+    puts "Weapons:".red.on_black
+    Weapon.all.each.with_index(1) do |weapon, index|
+        puts "#{index}. #{weapon.name}".black.on_red
+        puts "Damage: #{weapon.damage}, Defense: #{weapon.defense}".light_yellow
+    end
 
+    weapon_match = nil
+    while weapon_match == nil
+        
+        puts "Equip yourself:".red.on_black
+        weapon_choice = gets.strip
+        
+        if weapon_choice.to_i == 0
+            weapon_match = Weapon.all.find {|weapon| weapon_choice.downcase == weapon.name.downcase}
+        elsif weapon_choice.to_i >= 1 && weapon_choice.to_i <= Weapon.all.size
+            weapon_match = Weapon.all[weapon_choice.to_i - 1]
+        end
+    end
+    weapon_match
+end
+
+def attack(character_choice, hp, monster, monster_hp, weapon)
+    
+    name = character_choice.name
+    ap = character_choice.attack_power + weapon.damage
+    d = character_choice.defense + weapon.defense
+    if d < 0
+        d = 0
+    end
+    
+    monster_name = monster.name
+    monster_ap = monster.attack_power
+    monster_d = monster.defense 
+    
     puts ""
     puts "1. Attack".light_yellow.on_black
     
     gets.strip
     
-    attack = rand(1..ap)
-    defense = rand(1..d)
-    monster_attack = rand(1..monster_ap)
-    monster_defense = rand(1..monster_d)
+    attack = rand(0..ap)
+    defense = rand(0..d)
+    monster_attack = rand(0..monster_ap)
+    monster_defense = rand(0..monster_d)
     
     character_damage_taken = monster_attack - defense
     monster_damage_taken = attack - monster_defense
@@ -442,29 +532,42 @@ def attack(name, hp, ap, d, monster_name, monster_hp, monster_ap, monster_d, mon
     puts ""
     
     puts "#{name} ".light_cyan.on_black + "attacks".light_red.on_black + " #{monster_name} for #{attack} damage!".light_cyan.on_black
-    puts "BUT... #{monster_name} ".black.on_light_red + "blocks".light_yellow.on_light_red + " #{monster_defense} damage".black.on_light_red
-    puts "#{monster_name} ".black.on_light_red + "bleeds".light_yellow.on_light_red + " for #{monster_damage_taken} damage".black.on_light_red
+    puts "BUT... #{monster_name} ".light_cyan.on_black + "blocks".light_red.on_black + " #{monster_defense} damage".light_cyan.on_black
+    puts "#{monster_name} ".light_cyan.on_black + "bleeds".light_red.on_black + " for #{monster_damage_taken} damage".light_cyan.on_black
     puts ""
     puts "#{monster_name} ".black.on_light_red + "causes".light_yellow.on_light_red + " #{name} #{monster_attack} damage".black.on_light_red
-    puts "#{name} valiantly ".light_cyan.on_black + "defends".light_red.on_black + " for #{defense} damage!".light_cyan.on_black
-    puts "#{name} ".light_cyan.on_black + "grunts".light_red.on_black + " for #{character_damage_taken} damage".light_cyan.on_black
-
+    puts "#{name} valiantly ".black.on_light_red + "defends".light_yellow.on_light_red + " for #{defense} damage!".black.on_light_red
+    puts "#{name} ".black.on_light_red + "grunts".light_yellow.on_light_red + " for #{character_damage_taken} damage".black.on_light_red
+    
     hp -= character_damage_taken
     monster_hp -= monster_damage_taken
     
+    if hp < 0
+        hp = 0
+    end
+    if monster_hp < 0
+        monster_hp = 0
+    end
+
+    puts ""
+    puts "#{name}'s remaining HP: #{hp}".light_cyan.on_black
+    puts "#{monster_name}'s remaining HP: #{monster_hp}".black.on_light_red
+    
+    if monster_hp > 0
+        puts ""
+        puts "#{monster_name}: #{monster.monster_verbages.sample.verbage}".light_red.on_black
+    end
+    
     if(hp <= 0 && monster_hp > 0)
-        system("clear")
         puts ""
         puts "#{monster_name} slayed #{name}".light_red.on_black
     elsif(hp > 0 && monster_hp <= 0)
-        system("clear")
         puts ""
         puts "You decimated #{monster_name}!".light_green.on_black
     elsif(hp <= 0 && monster_hp <= 0)
-        system("clear")
         puts ""
         puts "You killed each other".light_white.on_black
     else
-        attack(name, hp, ap, d, monster_name, monster_hp, monster_ap, monster_d, monster)
+        attack(character_choice, hp, monster, monster_hp, weapon)
     end
 end
