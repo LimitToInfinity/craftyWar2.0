@@ -5,6 +5,7 @@ Character.delete_all
 User.delete_all
 MonsterVerbage.delete_all
 Monster.delete_all
+Weapon.delete_all
 
 
 Race.create(name: "Gnome", hit_points: 3, attack_power: 1, defense: 1, picture: "gnome.jpg")
@@ -29,7 +30,7 @@ BattleClass.create(name: "Priest", hit_points: 14, attack_power: 6, defense: 1, 
 BattleClass.create(name: "Rogue", hit_points: 12, attack_power: 8, defense: 2, picture: "rogue.jpg")
 BattleClass.create(name: "Shaman", hit_points: 11, attack_power: 7, defense: 2, picture: "shaman.jpg")
 BattleClass.create(name: "Warlock", hit_points: 15, attack_power: 6, defense: 3, picture: "warlock.jpg")
-BattleClass.create(name: "Warrior", hit_points: 16, attack_power: 6, defense: 4, picture: "warrior.jpg")
+BattleClass.create(name: "Warrior", hit_points: 16, attack_power: 6, defense: 4, picture: "warrior.png")
 BattleClass.create(name: "Death Knight", hit_points: 17, attack_power: 7, defense: 4, picture: "death_knight.jpg")
 BattleClass.create(name: "Monk", hit_points: 18, attack_power: 4, defense: 3, picture: "monk.jpg")
 BattleClass.create(name: "Demon Hunter", hit_points: 11, attack_power: 10, defense: 0, picture: "demon_hunter.jpg")
@@ -59,3 +60,17 @@ MonsterVerbage.create(verbage: "I will eat you like a cookie!", monster: celluli
 MonsterVerbage.create(verbage: "Divine you are not!", monster: kali)
 MonsterVerbage.create(verbage: "Hero, you will be destroyed!", monster: kali)
 MonsterVerbage.create(verbage: "How dare you show yourself!", monster: kali)
+
+Weapon.create(name: "Battle Axe", damage: 4, defense: -2, picture: "battle_axe.jpg")
+Weapon.create(name: "Staff", damage: 1, defense: 1, picture: "staff.jpg")
+Weapon.create(name: "Wand", damage: 2, defense: 0, picture: "wand.jpg")
+Weapon.create(name: "Sword", damage: 3, defense: 0, picture: "sword.jpg")
+Weapon.create(name: "Shield", damage: 0, defense: 3, picture: "shield.jpg")
+Weapon.create(name: "Morning Star", damage: 2, defense: -1, picture: "morning_star.jpg")
+Weapon.create(name: "Whip", damage: 1, defense: 1, picture: "whip.jpg")
+Weapon.create(name: "Mace", damage: 2, defense: 0, picture: "mace.jpg")
+Weapon.create(name: "Bow", damage: 3, defense: -1, picture: "bow.jpg")
+Weapon.create(name: "Dagger", damage: 3, defense: -1, picture: "dagger.jpg")
+Weapon.create(name: "Claws", damage: 3, defense: -1, picture: "claws.jpg")
+Weapon.create(name: "Spiked Bracers", damage: 1, defense: 2, picture: "spiked_bracers.jpg")
+Weapon.create(name: "Spear", damage: 2, defense: 1, picture: "spear.png")
