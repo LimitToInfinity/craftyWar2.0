@@ -430,7 +430,7 @@ def battle_menu(character_choice)
     case user_input
     when "1"
         system("clear")
-        battle_arena(character_choice)
+        battle_opening(character_choice)
     when "2"
         system("clear")
         character_option_menu(character_choice)
@@ -439,7 +439,7 @@ def battle_menu(character_choice)
     end
 end
 
-def battle_arena(character_choice)
+def battle_opening(character_choice)
     
     monster = Monster.all.sample
     
@@ -462,7 +462,7 @@ def battle_arena(character_choice)
     puts "Attack Power - #{ap}".light_green.on_black
     puts "Defense - #{d}".light_green.on_black
     
-    attack(character_choice, character_choice.hit_points, monster, monster.hit_points, weapon)
+    battle_arena(character_choice, character_choice.hit_points, monster, monster.hit_points, weapon)
     
     character_option_menu(character_choice)
 end
@@ -490,8 +490,67 @@ def weapon_select
     weapon_match
 end
 
-def attack(character_choice, hp, monster, monster_hp, weapon)
+def battle_arena(character_choice, hp, monster, monster_hp, weapon)
     
+    user_input = nil
+    while user_input != "1" && user_input != "2"
+        puts ""
+        puts "1. Attack".light_yellow.on_black
+        puts "2. Heal".light_yellow.on_black
+        
+        user_input = gets.strip
+    end
+
+    if user_input == "1"
+        battle_hash = attack(character_choice, hp, monster, monster_hp, weapon)
+    elsif user_input == "2"
+        battle_hash = heal(character_choice, hp, monster, monster_hp, weapon)
+    end
+
+    name = character_choice.name
+    monster_name = monster.name
+    
+    system("clear")
+    puts ""
+    
+    puts "#{name} ".light_cyan.on_black + "attacks".light_red.on_black + " #{monster_name} for #{battle_hash[:cap]} damage!".light_cyan.on_black
+    puts "#{name} ".light_cyan.on_black + "heals".light_red.on_black + " for #{battle_hash[:ch]} hit points!".light_cyan.on_black
+    puts "BUT... #{monster_name} ".light_cyan.on_black + "blocks".light_red.on_black + " #{battle_hash[:md]} damage".light_cyan.on_black
+    puts "#{monster_name} ".light_cyan.on_black + "bleeds".light_red.on_black + " for #{battle_hash[:mdt]} damage".light_cyan.on_black
+    puts ""
+    puts "#{monster_name} ".black.on_light_red + "causes".light_yellow.on_light_red + " #{name} #{battle_hash[:map]} damage".black.on_light_red
+    puts "#{name} valiantly ".black.on_light_red + "defends".light_yellow.on_light_red + " for #{battle_hash[:cd]} damage!".black.on_light_red
+    if battle_hash[:cdt] >= 0
+        puts "#{name} ".black.on_light_red + "grunts".light_yellow.on_light_red + " for #{battle_hash[:cdt]} damage".black.on_light_red
+    else
+        puts "#{name} ".black.on_light_red + "restores".light_yellow.on_light_red + " #{battle_hash[:cdt].abs} health".black.on_light_red
+    end
+    
+    puts ""
+    puts "#{name}'s remaining HP: #{battle_hash[:chp]}".light_cyan.on_black
+    puts "#{monster_name}'s remaining HP: #{battle_hash[:mhp]}".black.on_light_red
+    
+    if monster_hp > 0
+        puts ""
+        puts "#{monster_name}: #{monster.monster_verbages.sample.verbage}".light_red.on_black
+    end
+    
+    if(battle_hash[:chp] <= 0 && battle_hash[:mhp] > 0)
+        puts ""
+        puts "#{monster_name} slayed #{name}".light_red.on_black
+    elsif(battle_hash[:chp] > 0 && battle_hash[:mhp] <= 0)
+        puts ""
+        puts "You decimated #{monster_name}!".light_green.on_black
+    elsif(battle_hash[:chp] <= 0 && battle_hash[:mhp] <= 0)
+        puts ""
+        puts "You killed each other".light_white.on_black
+    else
+        battle_arena(character_choice, battle_hash[:chp], monster, battle_hash[:mhp], weapon)
+    end
+end
+
+def attack(character_choice, hp, monster, monster_hp, weapon)
+
     name = character_choice.name
     ap = character_choice.attack_power + weapon.damage
     d = character_choice.defense + weapon.defense
@@ -502,19 +561,15 @@ def attack(character_choice, hp, monster, monster_hp, weapon)
     monster_name = monster.name
     monster_ap = monster.attack_power
     monster_d = monster.defense 
-    
-    puts ""
-    puts "1. Attack".light_yellow.on_black
-    
-    gets.strip
-    
-    attack = rand(0..ap)
-    defense = rand(0..d)
+
+    c_attack = rand(0..ap)
+    c_defense = rand(0..d)
+
     monster_attack = rand(0..monster_ap)
     monster_defense = rand(0..monster_d)
     
-    character_damage_taken = monster_attack - defense
-    monster_damage_taken = attack - monster_defense
+    character_damage_taken = monster_attack - c_defense
+    monster_damage_taken = c_attack - monster_defense
     
     if character_damage_taken < 0
         character_damage_taken = 0
@@ -523,17 +578,6 @@ def attack(character_choice, hp, monster, monster_hp, weapon)
         monster_damage_taken = 0
     end
 
-    system("clear")
-    puts ""
-    
-    puts "#{name} ".light_cyan.on_black + "attacks".light_red.on_black + " #{monster_name} for #{attack} damage!".light_cyan.on_black
-    puts "BUT... #{monster_name} ".light_cyan.on_black + "blocks".light_red.on_black + " #{monster_defense} damage".light_cyan.on_black
-    puts "#{monster_name} ".light_cyan.on_black + "bleeds".light_red.on_black + " for #{monster_damage_taken} damage".light_cyan.on_black
-    puts ""
-    puts "#{monster_name} ".black.on_light_red + "causes".light_yellow.on_light_red + " #{name} #{monster_attack} damage".black.on_light_red
-    puts "#{name} valiantly ".black.on_light_red + "defends".light_yellow.on_light_red + " for #{defense} damage!".black.on_light_red
-    puts "#{name} ".black.on_light_red + "grunts".light_yellow.on_light_red + " for #{character_damage_taken} damage".black.on_light_red
-    
     hp -= character_damage_taken
     monster_hp -= monster_damage_taken
     
@@ -543,26 +587,71 @@ def attack(character_choice, hp, monster, monster_hp, weapon)
     if monster_hp < 0
         monster_hp = 0
     end
+    
+    battle_hash = {}
 
-    puts ""
-    puts "#{name}'s remaining HP: #{hp}".light_cyan.on_black
-    puts "#{monster_name}'s remaining HP: #{monster_hp}".black.on_light_red
-    
-    if monster_hp > 0
-        puts ""
-        puts "#{monster_name}: #{monster.monster_verbages.sample.verbage}".light_red.on_black
+    battle_hash = {:chp => hp,
+    :cap => c_attack,
+    :cd => c_defense,
+    :cdt => character_damage_taken,
+    :ch => 0,
+    :mhp => monster_hp,
+    :map => monster_attack,
+    :md => monster_defense,
+    :mdt => monster_damage_taken}
+end
+
+def heal(character_choice, hp, monster, monster_hp, weapon)
+    name = character_choice.name
+    ap = character_choice.attack_power + weapon.damage
+    d = character_choice.defense + weapon.defense
+    if d < 0
+        d = 0
     end
     
-    if(hp <= 0 && monster_hp > 0)
-        puts ""
-        puts "#{monster_name} slayed #{name}".light_red.on_black
-    elsif(hp > 0 && monster_hp <= 0)
-        puts ""
-        puts "You decimated #{monster_name}!".light_green.on_black
-    elsif(hp <= 0 && monster_hp <= 0)
-        puts ""
-        puts "You killed each other".light_white.on_black
-    else
-        attack(character_choice, hp, monster, monster_hp, weapon)
+    monster_name = monster.name
+    monster_ap = monster.attack_power
+    monster_d = monster.defense 
+
+    # c_attack = rand(0..ap)
+    # c_defense = rand(0..d)
+    heal = rand(0..(1.5*d)).round
+    
+    monster_attack = rand(0..monster_ap)
+    monster_defense = rand(0..monster_d)
+    
+    character_damage_taken = monster_attack - heal
+    # monster_damage_taken = c_attack - monster_defense
+    
+    # if character_damage_taken < 0
+    #     character_damage_taken = 0
+    # end
+    # if monster_damage_taken < 0
+    #     monster_damage_taken = 0
+    # end
+    
+    hp -= character_damage_taken
+    # monster_hp -= monster_damage_taken
+    
+    if hp > character_choice.hit_points
+        hp = character_choice.hit_points
     end
+
+    if hp < 0
+        hp = 0
+    end
+    if monster_hp < 0
+        monster_hp = 0
+    end
+    battle_hash = {}
+
+    battle_hash = {:chp => hp,
+    :cap => 0,
+    :cd => 0,
+    :cdt => character_damage_taken,
+    :ch => heal,
+    :mhp => monster_hp,
+    :map => monster_attack,
+    :md => monster_defense,
+    :mdt => 0}
 end
