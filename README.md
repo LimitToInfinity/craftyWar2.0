@@ -5,6 +5,8 @@ aka Module 1 with Tri & Ahmed
 
 Welcome to the World of Crafty War, where characters are made and destroyed. Battles are won and lost. A world where you can use your imagination. Enter at your own risk!
 
+https://youtu.be/ABLz00oGHOk
+
 ![Warrior](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/warrior.png)
 ![Troll](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/troll.jpg)
 ![Shaman](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/shaman.jpg)
