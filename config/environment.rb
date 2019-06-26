@@ -13,6 +13,6 @@ ActiveRecord::Base.establish_connection(
 
 ActiveRecord::Base.logger = nil
 
-main_menu
+# main_menu
 
-# binding.pry
+binding.pry

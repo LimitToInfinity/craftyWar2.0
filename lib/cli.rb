@@ -530,7 +530,7 @@ def battle_arena(character_choice, hp, monster, monster_hp, weapon)
     puts "#{name}'s remaining HP: #{battle_hash[:chp]}".light_cyan.on_black
     puts "#{monster_name}'s remaining HP: #{battle_hash[:mhp]}".black.on_light_red
     
-    if monster_hp > 0
+    if battle_hash[:mhp] > 0
         puts ""
         puts "#{monster_name}: #{monster.monster_verbages.sample.verbage}".light_red.on_black
     end
@@ -602,6 +602,7 @@ def attack(character_choice, hp, monster, monster_hp, weapon)
 end
 
 def heal(character_choice, hp, monster, monster_hp, weapon)
+    
     name = character_choice.name
     ap = character_choice.attack_power + weapon.damage
     d = character_choice.defense + weapon.defense
@@ -613,25 +614,13 @@ def heal(character_choice, hp, monster, monster_hp, weapon)
     monster_ap = monster.attack_power
     monster_d = monster.defense 
 
-    # c_attack = rand(0..ap)
-    # c_defense = rand(0..d)
     heal = rand(0..(1.5*d)).round
-    
     monster_attack = rand(0..monster_ap)
     monster_defense = rand(0..monster_d)
     
     character_damage_taken = monster_attack - heal
-    # monster_damage_taken = c_attack - monster_defense
-    
-    # if character_damage_taken < 0
-    #     character_damage_taken = 0
-    # end
-    # if monster_damage_taken < 0
-    #     monster_damage_taken = 0
-    # end
     
     hp -= character_damage_taken
-    # monster_hp -= monster_damage_taken
     
     if hp > character_choice.hit_points
         hp = character_choice.hit_points
