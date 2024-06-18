@@ -1,11 +1,14 @@
-World of Crafty War
-aka Module 1 with Tri & Ahmed
+# World of Crafty War
+Welcome to the World of Crafty War, where characters are made and destroyed. Battles are won and lost. A world where you can use your imagination. Enter at your own risk!
 
 ![Unsplash Ominous Scene](https://images.unsplash.com/photo-1496526311033-8a80ae14a1f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60)
 
-Welcome to the World of Crafty War, where characters are made and destroyed. Battles are won and lost. A world where you can use your imagination. Enter at your own risk!
+## Features
 
-https://youtu.be/ABLz00oGHOk
+- **Unleash Epic Characters**: Forge powerful warriors and mystical druids with unique stats and abilities.
+- **Engage in Tactical Battles**: Test your strategic skills in thrilling turn-based combat scenarios.
+- **Explore a Persistent World**: Your game progress is securely saved using Active Record, ensuring the preservation of your beloved characters.
+- **Dive into Dynamic Interaction**: Immerse yourself in a rich game world filled with interactive elements for a truly captivating experience.
 
 ![Warrior](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/warrior.png)
 ![Troll](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/troll.jpg)
@@ -14,30 +17,55 @@ https://youtu.be/ABLz00oGHOk
 ![Skinner](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/skinner.png)
 ![Druid](https://raw.githubusercontent.com/LimitToInfinity/Mod1/master/lib/pic/druid.jpg)
 
-Installation instructions:
-1) Install NPM and Node:
-  a) https://www.npmjs.com/get-npm.
-  b) Click "Download Node.js and npm".
-  c) Check "node -v" and "npm -v" to verify it worked and you have the current version.
+## Watch the Game in Action!
+Get ready to witness the game in action! Eager to experience the gameplay? Explore our [video](https://youtu.be/ABLz00oGHOk) for an in-depth look at what World of Crafty War has to offer.
 
-2) Install ITerm2 by going to https://www.iterm2.com/ then click "Download" at the bottom, and follow the instructions (moving it into your Applications folder when installation is completed).
+## Installation
 
-3) Install imgcat-cli:
-  a) In ITerm2 enter, "npm install -g imgcat-cli".
-  b) See https://github.com/egoist/imgcat-cli for more information.
+1. **Install Dependencies**:
+   - **Node.js and npm**: [Get npm](https://www.npmjs.com/get-npm)
+     ```sh
+     node -v
+     npm -v
+     ```
+   - **iTerm2**: [Download iTerm2](https://www.iterm2.com/)
+   - **imgcat-cli**: 
+     ```sh
+     npm install -g imgcat-cli
+     ```
+     [More info](https://github.com/egoist/imgcat-cli)
+   - **Ruby**: [Installation Guide](https://www.ruby-lang.org/en/documentation/installation/)
+     ```sh
+     ruby -v
+     ```
 
-4) Ruby is needed. To install Ruby:
-  a) First check if Ruby is installed by entering "ruby -v" in your terminal (ITerm2). If it is installed, you will see a version such as "ruby 2.6.1p33".
-  b) For installation instructions, if needed, see https://www.ruby-lang.org/en/documentation/installation/
+2. **Clone the Repository**:
+   ```sh
+   git clone https://github.com/LimitToInfinity/craftyWar2.0.git
+   cd craftyWar2.0
+   ```
 
-5) Clone the project onto your device, then after cloning, run "bundle install".
+3. **Install Gems**:
+   ```sh
+   bundle install
+   ```
 
-6) To run the program in your terminal (ITerm2):
-  a) Go to the Mod1 folder you cloned.
-  b) While in the Mod1 folder, run "ruby config/environment.rb"
-  c) Enjoy!
-  
-7) If you would like to contribute!!! Please:
-  a) Send us an email at 21stLimitless@gmail.com to become a collaborator.
-  b) We can send further instructions on using Github, and otherwise as needed.
-  c) Our code is open source! Although if we had a license, it would be called BadAsseryProductions.
+4. **Start the Game**:
+   ```sh
+   ruby config/environment.rb
+   ```
+
+## About
+World of Crafty War (WoW) is a collaboration between Tri and Ahmed. This CLI game utilizes the power of Ruby, Sinatra, and Active Record to deliver an immersive experience.
+
+## Contributing
+Hey there! We welcome your contributions! If you're interested in joining us as a collaborator, shoot us an email at 21stLimitless@gmail.com. We'll guide you through using Github or assist you with anything else you might need. Our code is open source and if it had a license, it would be called BadAsseryProductions. Let's make awesome things together!
+
+## Contributors
+- [LimitToInfinity](https://github.com/LimitToInfinity)
+- [seddonnguyen](https://github.com/seddonnguyen)
+
+## License
+This project is licensed under the MIT License, making it free to use and modify. See the [LICENSE](https://github.com/LimitToInfinity/craftyWar2.0/blob/master/LICENSE) file for details.
+
+Enjoy your adventure in the World of Crafty War!
