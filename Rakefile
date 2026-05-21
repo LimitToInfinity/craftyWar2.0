@@ -1,2 +1,4 @@
-require_relative "./config/environment.rb"
-require "sinatra/activerecord/rake"
+# frozen_string_literal: true
+
+require_relative './config/environment'
+require 'sinatra/activerecord/rake'
